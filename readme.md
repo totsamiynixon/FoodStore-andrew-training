@@ -11,27 +11,23 @@ Please, fix the issue with deleting categories.
 
 Please, fix the issue with deleting products.
 
-### [Bug 3] Delete "Product" button doesn't work
-
-Please, fix the issue with deleting products.
-
-### [Bug 4] On Login page validation is broken
+### [Bug 3] On Login page validation is broken
 
 If user enters credentials and click submit everything is fine. But if user sends form with empty fields there is an 500 error.
 URL: https://localhost:53939/Account/Login
 Please, add validation to don't allow to submit form with empty fields.
 
-### [Bug 5] Logout button seems to doesn't work
+### [Bug 4] Logout button seems is broken
 
 Please fix logout button to sign out user. Now it just clears Shopping Cart.
 
-### [Bug 6] On "Home" page all of the product names seem to be confused with "Category" names
+### [Bug 5] On "Home" page all of the product names seem to be confused with "Category" names
 
 Please display Product names instead of Category names on Home page.
 
-### [Bug 7] On "Home" search seem to be case sensetive
+### [Bug 6] On "Home" search seems to be case sensitive
 
-Please, use case insensetive search on Home page. 
+Please, use case insensitive search on Home page. 
 Currently if you put in Search Input "Chicken" -> Chicken will be displayed.
 But if you put "chicken" -> Chicken will not be displayed. Please, fix that.
 
