@@ -1,11 +1,10 @@
-
+using Shop.Data.Enums;
 using System;
 using System.Collections.Generic;
-using Shop.Data.Enums;
 
 namespace Shop.Web.Models.Order
 {
-	public class OrderArchiveModel
+    public class OrderArchiveModel
 	{
 		public DateTime? MinDate { get; set; }
 		public DateTime? MaxDate { get; set; }

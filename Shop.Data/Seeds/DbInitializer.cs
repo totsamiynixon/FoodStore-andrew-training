@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Shop.Data;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Shop.Data.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,25 +7,21 @@ namespace Shop.Data.Seeds
 {
     public class DbInitializer
     {
-        public static void Seed(IApplicationBuilder applicationBuilder)
+        public static void Seed(ApplicationDbContext context)
         {
-            using (var serviceScope = applicationBuilder.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-                .CreateScope())
+
+            context.Database.EnsureCreated();
+
+            if (!context.Categories.Any())
             {
-                ApplicationDbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                context.Categories.AddRange(Categories.Select(c => c.Value));
+            }
 
-                context.Database.EnsureCreated();
-
-                if (!context.Categories.Any())
+            //context.Drinks.RemoveRange(context.Drinks);
+            if (!context.Foods.Any())
+            {
+                var foods = new Food[]
                 {
-                    context.Categories.AddRange(Categories.Select(c => c.Value));
-                }
-
-                //context.Drinks.RemoveRange(context.Drinks);
-                if (!context.Foods.Any())
-                {
-                    var foods = new Food[]
-                    {
                          new Food
                          {
                              Name = "Eggplant",
@@ -161,19 +155,18 @@ namespace Shop.Data.Seeds
                             LongDescription = "It comprises proteins and fat from milk, usually the milk of cows, buffalo, goats, or sheep. During production, the milk is usually acidified, and adding the enzyme rennet causes coagulation. The solids are separated and pressed into final form.",
                             Price = 4.4M
                         }
-                    };
+                };
 
 
-                    //foreach (var food in foods)
-                    //{
-                    //    food.ImageUrl = $"/images/Foods/{food.Name}.png";
-                    //}
+                //foreach (var food in foods)
+                //{
+                //    food.ImageUrl = $"/images/Foods/{food.Name}.png";
+                //}
 
-                    context.AddRange(foods);
-                }
-
-                context.SaveChanges();
+                context.AddRange(foods);
             }
+
+            context.SaveChanges();
         }
 
         private static Dictionary<string, Category> categories;

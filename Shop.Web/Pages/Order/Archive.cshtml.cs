@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,6 +6,9 @@ using Shop.Data.Enums;
 using Shop.Data.Models;
 using Shop.Web.DataMapper;
 using Shop.Web.Models.Order;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Shop.Web.Pages
 {
@@ -43,9 +43,9 @@ namespace Shop.Web.Pages
                 user = await _userManager.GetUserAsync(User);
             }
 
-            if(!pageNumber.HasValue)
+            if (!pageNumber.HasValue)
             {
-                pageNumber= 1;
+                pageNumber = 1;
             }
 
             int orderInPage = 5;
@@ -54,9 +54,9 @@ namespace Shop.Web.Pages
             var orders = _orderService.GetFilteredOrders(user.Id, OrderBy.None, (pageNumber.Value - 1) * orderInPage, orderInPage).ToList();
             var models = _mapper.OrdersToOrderIndexModels(orders);
 
-            if(Order.PageCount <= 0)
+            if (Order.PageCount <= 0)
             {
-                Order=(OrderArchiveModel)ViewData["Order"];
+                Order = (OrderArchiveModel)ViewData["Order"];
                 Order = new OrderArchiveModel
                 {
                     Orders = models,
@@ -76,9 +76,9 @@ namespace Shop.Web.Pages
         public IActionResult OnPost()
         {
             Order.ZipCode = "2222";
-            ViewData["Order"]= Order;
+            ViewData["Order"] = Order;
 
-            return RedirectToPage("Archive", new {pageNumber = 1});
+            return RedirectToPage("Archive", new { pageNumber = 1 });
         }
     }
 }

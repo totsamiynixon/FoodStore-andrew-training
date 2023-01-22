@@ -2,13 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Data.Models;
 using Shop.Web.Models.Account;
-using Shop.Web.Models.ShoppingCart;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Shop.Web.Components
 {
-	public class AccountSummary : ViewComponent
+    public class AccountSummary : ViewComponent
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 

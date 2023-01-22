@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Shop.Data.Enums;
 using Shop.Data.Models;
+using System;
+using System.Collections.Generic;
 
 namespace Shop.Data
 {
-	public interface IOrder
+    public interface IOrder
 	{
 		void CreateOrder(Order order);
         Order GetById(int orderId);

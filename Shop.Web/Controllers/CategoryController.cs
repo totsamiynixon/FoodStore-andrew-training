@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Data;
-using Shop.Data.Models;
 using Shop.Web.Models.Category;
 using Shop.Web.Models.Food;
-using System.Linq;
 using Shop.Web.DataMapper;
+using System.Linq;
 
 namespace Shop.Web.Controllers
 {
-	public class CategoryController : Controller
+    public class CategoryController : Controller
 	{
 		private readonly ICategory _categoryService;
 		private readonly IFood _foodService;

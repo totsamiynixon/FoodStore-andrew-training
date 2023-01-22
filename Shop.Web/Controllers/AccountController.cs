@@ -1,12 +1,11 @@
-﻿using System.Reflection.Metadata;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Shop.Data;
-using Shop.Data.Extensions;
 using Shop.Data.Models;
 using Shop.Web.DataMapper;
+using Shop.Web.Extensions;
 using Shop.Web.Models.Account;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,22 +51,22 @@ namespace Shop.Web.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Search(string searchQuery)
         {
-            if(string.IsNullOrWhiteSpace(searchQuery))
+            if (string.IsNullOrWhiteSpace(searchQuery))
             {
                 return RedirectToAction("Index");
             }
 
             var queries = string.IsNullOrEmpty(searchQuery) ? null : Regex.Replace(searchQuery, @"\s+", " ").Trim().ToLower().Split(" ");
-            var models = await _mapper.ApplicationUsersToAccountProfileModelsAsync(_userManager.Users.Where(user => queries.Any(query => (user.FirstName + " "+ user.LastName + " "+ user.Email).ToLower().Contains(query))),_orderService,_userManager);
-            
+            var models = await _mapper.ApplicationUsersToAccountProfileModelsAsync(_userManager.Users.Where(user => queries.Any(query => (user.FirstName + " " + user.LastName + " " + user.Email).ToLower().Contains(query))), _orderService, _userManager);
+
             var model = new AccountIndexModel
             {
                 Accounts = models,
                 SearchQuery = searchQuery
             };
 
-            return View("Index",model);
-        } 
+            return View("Index", model);
+        }
 
         [Authorize]
         public async Task<IActionResult> Profile(string userId)
@@ -181,11 +180,11 @@ namespace Shop.Web.Controllers
                         Password = register.Password,
                     };
                     await _userManager.AddToRoleAsync(user, "Customer");
-                    if(!_signInManager.IsSignedIn(User) )
+                    if (!_signInManager.IsSignedIn(User))
                     {
-                        await _signInManager.PasswordSignInAsync(user, register.Password, false,false);
+                        await _signInManager.PasswordSignInAsync(user, register.Password, false, false);
                     }
-                    if(!string.IsNullOrEmpty(register.ReturnUrl))
+                    if (!string.IsNullOrEmpty(register.ReturnUrl))
                     {
                         return Redirect(register.ReturnUrl);
                     }
@@ -200,7 +199,7 @@ namespace Shop.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            if(_signInManager.IsSignedIn(User))
+            if (_signInManager.IsSignedIn(User))
             {
                 await _signInManager.SignOutAsync();
                 _shoppingCart.ClearCart();
@@ -270,7 +269,7 @@ namespace Shop.Web.Controllers
 
                     var result = await _userManager.ChangePasswordAsync(user, model.OldPassword ?? "", model.NewPassword ?? "");
                     if (!result.Succeeded)
-                    { 
+                    {
                         ModelState.AddModelError("OldPassword", "Incorrect password, please enter your current password to change it");
                         return View("Settings", model);
                     }
@@ -278,7 +277,7 @@ namespace Shop.Web.Controllers
 
                 var role = _roleManager.Roles.First(r => r.Id == model.RoleId).Name;
                 var userRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-                if(role != userRole)
+                if (role != userRole)
                 {
                     await _userManager.RemoveFromRoleAsync(user, userRole);
                     await _userManager.AddToRoleAsync(user, role);
@@ -310,9 +309,9 @@ namespace Shop.Web.Controllers
                 user = await _userManager.GetUserAsync(User);
             }
 
-            if(user!=null)
+            if (user != null)
             {
-                if(string.IsNullOrEmpty(userId) || !User.IsInRole("Admin"))
+                if (string.IsNullOrEmpty(userId) || !User.IsInRole("Admin"))
                 {
                     await _signInManager.SignOutAsync();
                     _shoppingCart.ClearCart();

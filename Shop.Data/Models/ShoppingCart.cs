@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -19,16 +18,6 @@ namespace Shop.Data.Models
 
 		public string Id { get; set; }
 		public IEnumerable<ShoppingCartItem> ShoppingCartItems { get; set; }
-
-		public static ShoppingCart GetCart(IServiceProvider services)
-		{
-			ISession session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext.Session;
-			var context = services.GetService<ApplicationDbContext>();
-			string cartId = session.GetString("CartId") ?? Guid.NewGuid().ToString();
-
-			session.SetString("CartId", cartId);
-			return new ShoppingCart(context) { Id = cartId };
-		}
 
 		public bool AddToCart(Food food, int amount)
 		{
@@ -114,7 +103,7 @@ namespace Shop.Data.Models
 		public decimal GetShoppingCartTotal()
 		{
 			return _context.ShoppingCartItems.Where(c => c.ShoppingCartId == Id)
-				.Select(c => c.Food.Price * c.Amount).Sum();
+				.Select(c => c.Food.Price * c.Amount).ToList().Sum();
 		}
 
 	}

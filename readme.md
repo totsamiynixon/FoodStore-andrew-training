@@ -1,78 +1,122 @@
 # BUYNOW - online food shop
 
-My demo on creating web shop application with asp.net core and ef core
-<img src="https://user-images.githubusercontent.com/28567416/59143689-7890a080-89de-11e9-9a1d-710b7e50c391.png" width="800" heigth="800" />
+## Tasks
 
-## Getting Started
+### [Task 1] Change the app theme
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Implement ability to change the app header theme.
 
+#### Acceptance criteria:
 
-### Installing
+There is a dropdown near to the "Contact Us" button in the Footer with 2 options:
+* Light: app header has current styles;
+* Dark: app header background becomes #3c3d41 and font color and icons become #ffffff;
 
-A step by step series of examples that tell you how to get a development env running
+#### Technical details:
 
-Say what the step will be
-After cloning or downloading project, there are some steps you need to do in order to run application, depends on which
-operation system are you using
+* Use Cookies to store current theme value. The default theme is Light;
 
-### Admin users credentails
-    Username: admin@mail.com
-    Password: aA1234
+### [Task 2] Improve Header menu
 
-#### Windows
+When user hovers on "Categories" menu item in the Header all of the categories should appear in a dropdown for faster navigation.
 
-- You need to have .Net Core 2.2 installed on your machine
-- MSSQL localdb server
+### [Task 3] Keep items in cart between application runs
 
-### MacOs
-- You need to have .Net Core 2.2 installed on your machine
-- Sqlite3 installed 
+Currently after application restart all items from Shopping Cart dissapear.
+Please, implement ability to keep Shopping Cart items between application restarts.
 
-### Linux
-- You need to have .Net Core 2.2 installed on your machine
-- PostgreSql installed, and configured to have user with 
--- User id: postgres
--- Password: password
+#### Acceptance criteria:
 
-PostgreSql server will run on localhost:5432 by default, you can change setings from 'appsettings.Development.json' file
-![Screenshot-20190608104225-2226x428](https://user-images.githubusercontent.com/28567416/59143265-39605080-89da-11e9-9445-955afc5db111.png)
+* Shopping Cart items are persisted between application stop/start sessions.
 
-    
-## How to Run
-In order to run application you need to go Shop.Web project, and execute commands in bash/terminal below
-This will run application in default mode
+#### Technical details:
 
-    dotnet run
+* Use Cookies to keep Shopping Cart items between application restart;
 
-This will run application, and start watch, each time you make changes in c# code, application will restart automatically
+### [Task 4] Remove items from Shopping Cart
 
-    dotnet watch run
+Currently there is no way to remove a Cart Item from the Shopping Cart. 
+Implement ability to remove items from the Shopping Cart on https://localhost:53939/ShoppingCart page.
 
-After running application, you should see output something like this
+### [Task 5] Add ability to sort products by Price on Producta page
 
-<img width="500" heigth="500" src= "https://user-images.githubusercontent.com/28567416/59143447-59910f00-89dc-11e9-9730-2f786b97d588.png" />
+Currently when user selects category and lands on Products page there is no way to sort by any criteria.
+Implement ability to sort by Price.
 
+#### Acceptance criteria:
 
-## Running the tests
+On top of all products there should be a dropdown with title "Sort by Price" which has 3 options:
+* None - no sorting applied (Default);
+* Ascending - sorting by ascending applied;
+* Descending - sorting by descending applied;
 
-Currently there are no tests to run
+When option is selected, products are display sorted accordinatelly.
 
+### [Task 6] Add ability to filter products by Price on Producta page
 
-## Built With
+Currently when user selects category and lands on Products page there is no to filter products by Price.
+Implement ability to filter products by Price.
 
-* [Asp.Net Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-2.2) - The web framework used
-* [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/) - ORM
-* Sql servers 
-    * [Microsoft SQL server](https://www.microsoft.com/en-us/sql-server/sql-server-2019) - Used Sql server for windows
-    * [Postgre SQL](https://www.postgresql.org/) - Used Sql server for linux
-    * [SQLite](https://www.sqlite.org/) - Used Sql server for MacOs
+#### Acceptance criteria:
 
-## Authors
+Implement 2 inputs for price range:
+* Min.price - if value is provided, only products with Price > MinPrice should be displayed;
+* Max.price - if value is provided, only procuts with Price <= MaxPrice should be displayed;
 
-* **Spartak Bughdaryan** - *Initial work* - [Bugdaryan](https://github.com/bugdaryan)
+### [Task 7] Add ability to hide a single product on Producta page for just visitors
 
-See also the list of [contributors](https://github.com/bugdaryan/FoodStore/graphs/contributors) who participated in this project.
+Currently there is no way to hide producs for visitors. As an Admin i want to have ability to create and edit products 
+for future and make them visible only for regular users only when i want.
+Only Admins can see hidden products.
+
+#### Acceptance criteria:
+
+On page https://localhost:53939/Food/Edit/{product_id} there should be a checkbox input "Is Visible" which controls visibility of the product for regular visitors.
+If IsVisible is "false" the product shouldn't be visible for regular users which don't have role "Admin". Admins still see the product on the Products page.
+If Product is hidden - it automatically disappers from the Shopping Cart. All related shopping cart items should be deleted.
+
+### [Task 8] Hide/show categories
+
+Add ability to hide Categories using "IsVisible" property. 
+The logic works similar as on Product level, but if a Category is hidden, then all of the producs are also hidden.
+Only Admins can see hidden categories.
+
+If Category is hidden - all of its Products automatically disapper from the Shopping Cart. All related shopping cart items should be deleted.
+
+### [Task 9] Add ability to disable Cart & Checkout
+
+There are some clients, who don't want to sell their products using our website. They just want to display their products for visitors.
+
+#### Acceptance criteria:
+
+Please add ability to disable Shopping Cart and Checkout functionality.
+
+#### Technical details:
+
+Use "appsettings.json" to create a setting "Showcase": true/false. If application is in "Showcase" mode, 
+please, disable ShoppingCartController & OrderController. Also make sure that all of the Shopping Cart elements are gone from the User Interface.
+
+For instance:
+* Shopping Cart icon in the application header should disappear;
+* Shopping Cart buttons and icons should disapper from a single Product pages;
+* Find other places where Shopping Cart & Order should be hidden as well.
+
+### [Task 10] Implement "Contact Us" form
+
+There is a button "Contact Us" in the application Footer which doesn't work now. 
+Please, on click show a modal window with form inside. All of the form submits should be stored in the database.
+
+The next fields should be included:
+* First Name;
+* Last Name;
+* Email;
+* Comment;
+
+All users with role "Admin" should have in the application Header menu new item "Contact Us". When Admin clicks on this menu item he should be redirected on a page
+with list of all submitted forms sorted by Descending by CreatedDate property.
+
+When Admin clicks on a single submission, a new modal window appears with detailed information about this "Constact Us" submission.
+
 
 ## License
 

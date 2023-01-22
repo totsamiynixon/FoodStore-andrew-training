@@ -2,11 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Data;
-using Shop.Data.Enums;
 using Shop.Data.Models;
 using Shop.Web.DataMapper;
 using Shop.Web.Models.Order;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 

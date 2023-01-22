@@ -1,10 +1,10 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Shop.Data.Models;
+using System.Threading.Tasks;
 
-namespace Shop.Data.Extensions
+namespace Shop.Web.Extensions
 {
 	public static class HttpContextExtensions
 	{

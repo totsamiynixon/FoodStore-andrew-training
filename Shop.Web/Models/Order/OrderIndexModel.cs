@@ -7,7 +7,7 @@ using Shop.Web.Models.OrderDetail;
 
 namespace Shop.Web.Models.Order
 {
-	public class OrderIndexModel
+    public class OrderIndexModel
 	{
 		[BindNever]
 		public int Id { get; set; }

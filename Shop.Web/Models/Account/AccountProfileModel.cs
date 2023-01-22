@@ -3,8 +3,6 @@ using Shop.Web.Views.Food;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Shop.Web.Models.Account
 {

@@ -17,11 +17,19 @@ namespace Shop.Data
             modelBuilder.Entity<Food>()
                 .HasOne(f => f.Category)
                 .WithMany(c => c.Foods)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(fk => fk.CategoryId)
+                .IsRequired();
+
+            modelBuilder.Entity<Category>()
+               .HasMany(x => x.Foods)
+               .WithOne(x => x.Category)
+               .OnDelete(DeleteBehavior.ClientCascade);
 
             modelBuilder.Entity<ShoppingCartItem>()
-                .HasOne(sci => sci.Food);
+                .HasOne(sci => sci.Food)
+                .WithMany()
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ApplicationUser>()
                 .HasIndex(user => user.Email)

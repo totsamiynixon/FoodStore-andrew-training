@@ -1,15 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Data;
-using Shop.Data.Models;
 using Shop.Web.DataMapper;
 using Shop.Web.Models;
-using Shop.Web.Models.Category;
-using Shop.Web.Models.Food;
-using Shop.Web.Models.Home;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Shop.Web.Controllers
 {

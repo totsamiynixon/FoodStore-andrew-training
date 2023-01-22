@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Data.Models;
 using Shop.Web.Models.ShoppingCart;
-using System.Collections.Generic;
 
 namespace Shop.Web.Components
 {
