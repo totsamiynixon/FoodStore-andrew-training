@@ -1,5 +1,40 @@
 # BUYNOW - online food shop
 
+
+## Bugs
+
+### [Bug 1] Delete "Category" button doesn't work
+
+Please, fix the issue with deleting categories.  
+
+### [Bug 2] Delete "Product" button doesn't work
+
+Please, fix the issue with deleting products.
+
+### [Bug 3] Delete "Product" button doesn't work
+
+Please, fix the issue with deleting products.
+
+### [Bug 4] On Login page validation is broken
+
+If user enters credentials and click submit everything is fine. But if user sends form with empty fields there is an 500 error.
+URL: https://localhost:53939/Account/Login
+Please, add validation to don't allow to submit form with empty fields.
+
+### [Bug 5] Logout button seems to doesn't work
+
+Please fix logout button to sign out user. Now it just clears Shopping Cart.
+
+### [Bug 6] On "Home" page all of the product names seem to be confused with "Category" names
+
+Please display Product names instead of Category names on Home page.
+
+### [Bug 7] On "Home" search seem to be case sensetive
+
+Please, use case insensetive search on Home page. 
+Currently if you put in Search Input "Chicken" -> Chicken will be displayed.
+But if you put "chicken" -> Chicken will not be displayed. Please, fix that.
+
 ## Tasks
 
 ### [Task 1] Change the app theme
@@ -63,6 +98,7 @@ Implement 2 inputs for price range:
 * Min.price - if value is provided, only products with Price > MinPrice should be displayed;
 * Max.price - if value is provided, only procuts with Price <= MaxPrice should be displayed;
 
+
 ### [Task 7] Add ability to hide a single product on Producta page for just visitors
 
 Currently there is no way to hide producs for visitors. As an Admin i want to have ability to create and edit products 
@@ -75,7 +111,12 @@ On page https://localhost:53939/Food/Edit/{product_id} there should be a checkbo
 If IsVisible is "false" the product shouldn't be visible for regular users which don't have role "Admin". Admins still see the product on the Products page.
 If Product is hidden - it automatically disappers from the Shopping Cart. All related shopping cart items should be deleted.
 
-### [Task 8] Hide/show categories
+### [Task 8] Add ability to search on Categories page
+
+Currently there is Search functionality implemented for Products page. Our customer decided to implement similar functionality on 
+Categories page. 
+
+### [Task 9] Hide/show categories
 
 Add ability to hide Categories using "IsVisible" property. 
 The logic works similar as on Product level, but if a Category is hidden, then all of the producs are also hidden.
@@ -83,7 +124,7 @@ Only Admins can see hidden categories.
 
 If Category is hidden - all of its Products automatically disapper from the Shopping Cart. All related shopping cart items should be deleted.
 
-### [Task 9] Add ability to disable Cart & Checkout
+### [Task 10] Add ability to disable Cart & Checkout
 
 There are some clients, who don't want to sell their products using our website. They just want to display their products for visitors.
 
@@ -101,7 +142,7 @@ For instance:
 * Shopping Cart buttons and icons should disapper from a single Product pages;
 * Find other places where Shopping Cart & Order should be hidden as well.
 
-### [Task 10] Implement "Contact Us" form
+### [Task 11] Implement "Contact Us" form
 
 There is a button "Contact Us" in the application Footer which doesn't work now. 
 Please, on click show a modal window with form inside. All of the form submits should be stored in the database.

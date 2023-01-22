@@ -9,6 +9,5 @@ namespace Shop.Data
         Category GetById(int id);
         void NewCategory(Category category);
         void EditCategory(Category category);
-        void DeleteCategory(int id);
     }
 }

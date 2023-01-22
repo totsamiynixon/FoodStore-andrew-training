@@ -201,9 +201,9 @@ namespace Shop.Web.Controllers
         {
             if (_signInManager.IsSignedIn(User))
             {
-                await _signInManager.SignOutAsync();
                 _shoppingCart.ClearCart();
             }
+
             return RedirectToAction("Index", "Home");
         }
 

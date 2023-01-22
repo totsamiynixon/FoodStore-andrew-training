@@ -17,17 +17,6 @@ namespace Shop.Service
             _context = context;
         }
 
-		public void DeleteFood(int id)
-		{
-            var food = GetById(id);
-            if(food == null)
-            {
-                throw new ArgumentException();
-            }
-            _context.Remove(food);
-            _context.SaveChanges();
-		}
-
 		public void EditFood(Food food)
         {
             var model = _context.Foods.First(f => f.Id == food.Id);
@@ -59,13 +48,13 @@ namespace Shop.Service
 
         public IEnumerable<Food> GetFilteredFoods(string searchQuery)
         {
-            var queries = string.IsNullOrEmpty(searchQuery) ? null : Regex.Replace(searchQuery, @"\s+", " ").Trim().ToLower().Split(" ");
+            var queries = string.IsNullOrEmpty(searchQuery) ? null : Regex.Replace(searchQuery, @"\s+", " ").Trim().Split(" ");
             if(queries == null)
             {
                 return GetPreferred(10);
             }
 
-            return GetAll().Where(item => queries.Any(query => (item.Name.ToLower().Contains(query))));
+            return GetAll().Where(item => queries.Any(query => (item.Name.Contains(query))));
         }
 
         public IEnumerable<Food> GetFoodsByCategoryId(int categoryId)

@@ -41,8 +41,6 @@
                     {
                         <div>
                             <a class="btn btn-default" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-                            @Html.ActionLink("Delete", "Delete", new { id = @Model.Id },
-                                new { onclick = "return confirm('Are sure you want to delete food?');", @class="btn btn-danger" })
                         </div>
                     }
                 </form>

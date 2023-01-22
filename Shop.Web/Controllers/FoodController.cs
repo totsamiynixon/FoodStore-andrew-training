@@ -133,15 +133,6 @@ namespace Shop.Web.Controllers
             return View("CreateEdit", model);
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult Delete(int id)
-        {
-            var categoryId = _foodService.GetById(id).CategoryId;
-            _foodService.DeleteFood(id);
-
-            return RedirectToAction("Topic", "Category", new { id = categoryId, searchQuery = "" });
-        }
-
         private void GetCategoriesForDropDownList()
         {
             var categories = _categoryService.GetAll().Select(category => new CategoryDropdownModel
