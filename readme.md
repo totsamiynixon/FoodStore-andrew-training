@@ -3,13 +3,16 @@
 
 ## Bugs
 
-### [Bug 1] Delete "Category" button doesn't work
 
-Please, fix the issue with deleting categories.  
+### [Bug 1] On "Home" page all of the product names seem to be confused with "Category" names
 
-### [Bug 2] Delete "Product" button doesn't work
+Please display Product names instead of Category names on Home page.
 
-Please, fix the issue with deleting products.
+### [Bug 2] On "Home" search seems to be case sensitive
+
+Please, use case insensitive search on Home page. 
+Currently if you put in Search Input "Chicken" -> Chicken will be displayed.
+But if you put "chicken" -> Chicken will not be displayed. Please, fix that.
 
 ### [Bug 3] On Login page validation is broken
 
@@ -21,15 +24,13 @@ Please, add validation to don't allow to submit form with empty fields.
 
 Please fix logout button to sign out user. Now it just clears Shopping Cart.
 
-### [Bug 5] On "Home" page all of the product names seem to be confused with "Category" names
+### [Bug 7] Delete "Category" button doesn't work
 
-Please display Product names instead of Category names on Home page.
+Please, fix the issue with deleting categories.  
 
-### [Bug 6] On "Home" search seems to be case sensitive
+### [Bug 8] Delete "Product" button doesn't work
 
-Please, use case insensitive search on Home page. 
-Currently if you put in Search Input "Chicken" -> Chicken will be displayed.
-But if you put "chicken" -> Chicken will not be displayed. Please, fix that.
+Please, fix the issue with deleting products.
 
 ## Tasks
 
