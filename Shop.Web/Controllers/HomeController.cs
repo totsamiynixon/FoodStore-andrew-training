@@ -11,39 +11,21 @@ namespace Shop.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ICategory _categoryService;
         private readonly IFood _foodService;
         private readonly Mapper _mapper;
 
-        public HomeController(IFood foodService, ICategory category)
+        public HomeController(IFood foodService)
         {
             _foodService = foodService;
-            _categoryService = category;
             _mapper = new Mapper();
         }
 
         [Route("/")]
         public IActionResult Index()
         {
-            var categories = _categoryService.GetAll().
-                Select(category => new CategoryListingModel
-                {
-                    Name = category.Name,
-                    Description = category.Description,
-                    Id = category.Id,
-                    ImageUrl = category.ImageUrl
-                });
-
-            var model = new CategoryIndexModel
-            {
-                CategoryList = categories
-            };
-
+            var preferedFoods = _foodService.GetPreferred(10);
+            var model = _mapper.FoodsToHomeIndexModel(preferedFoods);
             return View(model);
-
-            //var preferedFoods = _foodService.GetPreferred(10);
-            //var model = _mapper.FoodsToHomeIndexModel(preferedFoods);
-            //return View(model);
         }
 
         public IActionResult Error()
