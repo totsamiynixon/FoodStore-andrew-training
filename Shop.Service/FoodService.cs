@@ -53,8 +53,8 @@ namespace Shop.Service
             {
                 return GetPreferred(10);
             }
-
-            return GetAll().Where(item => queries.Any(query => (item.Name.Contains(query))));
+            
+            return GetAll().Where(item => queries.Any(query => (item.Name.ToLower().Contains(query.ToLower()))));
         }
 
         public IEnumerable<Food> GetFoodsByCategoryId(int categoryId)
