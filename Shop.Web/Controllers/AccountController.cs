@@ -120,6 +120,7 @@ namespace Shop.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ModelState.AddModelError("IncorrectInput", "Username or Password is incorrect");
                 return View(login);
             }
 
@@ -202,6 +203,8 @@ namespace Shop.Web.Controllers
             if (_signInManager.IsSignedIn(User))
             {
                 _shoppingCart.ClearCart();
+                await _signInManager.SignOutAsync();
+
             }
 
             return RedirectToAction("Index", "Home");
