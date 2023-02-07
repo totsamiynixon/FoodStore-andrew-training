@@ -37,5 +37,12 @@ namespace Shop.Service
             _context.Add(category);
             _context.SaveChanges();
         }
+
+        public void DeleteCategory(int id)
+        {
+            var currentCategory = GetAll().FirstOrDefault(category => category.Id == id);
+            _context.Remove(currentCategory);
+
+        }
     }
 }

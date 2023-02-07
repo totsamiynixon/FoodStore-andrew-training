@@ -137,5 +137,14 @@ namespace Shop.Web.Controllers
 
 			return View("CreateEdit",model);
 		}
-	}
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id)
+        {
+            _categoryService.DeleteCategory(id);
+
+            return RedirectToAction("Index");
+        }
+
+    }
 }
