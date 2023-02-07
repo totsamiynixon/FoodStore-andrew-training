@@ -24,12 +24,17 @@ namespace Shop.Service
 
         public IEnumerable<Category> GetAll()
         {
+            return GetIncluding(); 
+        }
+
+        private IQueryable<Category> GetIncluding()
+        {
             return _context.Categories.Include(c => c.Foods);
         }
 
         public Category GetById(int id)
         {
-            return GetAll().FirstOrDefault(category => category.Id == id);
+            return GetIncluding().FirstOrDefault(category => category.Id == id);
         }
 
         public void NewCategory(Category category)
@@ -40,8 +45,9 @@ namespace Shop.Service
 
         public void DeleteCategory(int id)
         {
-            var currentCategory = GetAll().FirstOrDefault(category => category.Id == id);
+            var currentCategory = GetById(id);
             _context.Remove(currentCategory);
+            _context.SaveChanges();
 
         }
     }

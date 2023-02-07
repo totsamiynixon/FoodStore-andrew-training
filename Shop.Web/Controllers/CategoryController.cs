@@ -138,6 +138,16 @@ namespace Shop.Web.Controllers
 			return View("CreateEdit",model);
 		}
 
+		//[HttpPost]
+  //      [Authorize(Roles = "Admin")]
+  //      public IActionResult Delete(CategoryListingModel model)
+  //      {
+  //          _categoryService.DeleteCategory(model.Id);
+
+  //          return RedirectToAction("Index");
+  //      }
+
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
@@ -145,6 +155,7 @@ namespace Shop.Web.Controllers
 
             return RedirectToAction("Index");
         }
+
 
     }
 }

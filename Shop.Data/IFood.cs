@@ -13,5 +13,6 @@ namespace Shop.Data
         Food GetById(int id);
         void NewFood(Food food);
         void EditFood(Food food);
+        void DeleteFood(int id);
     }
 }

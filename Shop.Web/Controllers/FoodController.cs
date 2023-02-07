@@ -142,5 +142,17 @@ namespace Shop.Web.Controllers
             });
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
         }
+
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id)
+        {
+            var currentFood = _foodService.GetById(id);
+            var categoryId = currentFood.CategoryId; // получаем категорию где находился наш товар
+            _foodService.DeleteFood(id);
+
+            return RedirectToAction("Topic", "Category", new { id = categoryId, searchQuery = "" });
+
+        }
     }
 }

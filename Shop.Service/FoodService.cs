@@ -72,5 +72,12 @@ namespace Shop.Service
             _context.Add(food);
             _context.SaveChanges();
         }
+
+        public void DeleteFood(int id)
+        {
+            var currentFood = GetById(id);
+                _context.Remove(currentFood);
+                _context.SaveChanges();
+        }
     }
 }

@@ -112,7 +112,7 @@ namespace Shop.Web.DataMapper
             var foodsListing = foods.Select(food => new FoodListingModel
             {
                 Id = food.Id,
-                Name = food.Category.Name,
+                Name = food.Name,
                 Category = CategoryToCategoryListing(food.Category),
                 ImageUrl = food.ImageUrl,
                 InStock = food.InStock,

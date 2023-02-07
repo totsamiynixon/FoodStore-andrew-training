@@ -39,8 +39,13 @@
                         <a class="btn btn-default" asp-controller="Category" asp-action="Edit" asp-route-id="@Model.Category.Id">Edit</a>
                     </div>
                     <div class="row">
-                        @Html.ActionLink("Delete", "Delete", new { id = @Model.Category.Id },
-                new { onclick = "return confirm('Are sure you want to delete category?');", @class="btn btn-danger" })
+                        <form asp-controller="Category" asp-action="Delete"  method="post">
+
+                            <input type="hidden" asp-for="Category.Id" value="@Model.Category.Id" name="id" />
+                            <input type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Are sure you want to delete category?');" />
+                        </form>
+                        @*@Html.ActionLink("Delete", "Delete", new { id = @Model.Category.Id },
+                new { onclick = "return confirm('Are sure you want to delete category?');", @class="btn btn-danger" })*@
                     </div>
                 </div>
             </div>
