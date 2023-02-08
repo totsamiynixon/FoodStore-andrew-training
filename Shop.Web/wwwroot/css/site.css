@@ -1270,3 +1270,9 @@ body{
     color: #fff;
     background-color: #333;
   }
+
+#myFooter a:hover,
+#myFooter a:focus {
+    text-decoration: none;
+    color: black;
+}
