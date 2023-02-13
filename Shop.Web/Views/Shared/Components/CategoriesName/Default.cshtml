@@ -1,0 +1,4 @@
+﻿@foreach (var category in ViewBag.Categories.CategoryListName)
+{
+    <a class="dropdown-item" asp-controller="Category" asp-action="Topic" asp-route-id="@category.Id">@category.Name</a>
+}

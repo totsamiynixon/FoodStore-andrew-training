@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Shop.Data.Models
+@using Shop.Web.Models.Category
 
 @using Microsoft.AspNetCore.Http;
 
@@ -58,8 +59,12 @@
 
         <div class="collapse navbar-collapse" id="navbarColor03">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" asp-controller="Category" asp-action="Index">Categories</a>
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" id="drop" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                       asp-controller="Category" asp-action="Index">Categories</a>
+                    <div class="dropdown-menu" aria-labelledby="drop">
+                        @await Component.InvokeAsync("CategoriesName");
+                    </div>
                 </li>
                 @if (User.IsInRole("Admin"))
                 {
@@ -90,6 +95,8 @@
             </form>
         </div>
     </nav>
+    <h1>
+    </h1>
     <div class="container body-content flex-shrink-0">
         @RenderBody()
     </div>
@@ -158,8 +165,8 @@
     <!-- Footer -->
 
     <environment include="Development">
-        <!-- <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script> -->
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script> 
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -201,12 +208,12 @@
         ///////////////////////////////////////////////////-------
         function setDarkTheme(winDoc) {
             saveThemeCookie("Dark");
-           window.location.reload()
+            window.location.reload()
         }
 
         function removeDarkTheme(winDoc) {
             saveThemeCookie("Light");
-           window.location.reload();
+            window.location.reload();
         }
 
         function saveThemeCookie(cookieValue) {
@@ -225,6 +232,20 @@
         //        return false;
         //    }
         //}
+
+        $('.dropdown').on("mouseenter", () => {
+            $(".dropdown > a").addClass('show')
+            $(".dropdown > a").attr("aria-expanded", "true");
+            $(".dropdown > div").attr("data-bs-popper", "none");
+            $(".dropdown > div").addClass('show')
+        })
+
+        $('.dropdown').on("mouseleave", () => {
+            $(".dropdown > a").removeClass('show')
+            $(".dropdown > a").attr("aria-expanded", "false");
+            $(".dropdown > div").removeAttr("data-bs-popper", "none");
+            $(".dropdown > div").removeClass('show')
+        })
     </script>
 
     @RenderSection("Scripts", required: false)

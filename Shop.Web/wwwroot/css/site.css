@@ -1318,3 +1318,17 @@ body{
     .theme-dark a {
         color: #ffffff !important;
     }
+
+/*.dropdown:hover .dropdown-menu {
+    display: flex;
+    flex-wrap: wrap;
+}*/
+
+/*.dropdown-menu.show {
+    margin-top: -1vh;
+    width: 40%;
+}*/
+
+/*.dropdown-item {
+    width: 25% !important;
+}*/
