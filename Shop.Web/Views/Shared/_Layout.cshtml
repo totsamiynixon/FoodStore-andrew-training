@@ -6,8 +6,6 @@
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
-
 
 @{
     if (Context.Request.Cookies.ContainsKey("theme"))
@@ -165,9 +163,9 @@
     <!-- Footer -->
 
     <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
+ @*       <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script> 
-        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>*@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -219,19 +217,6 @@
         function saveThemeCookie(cookieValue) {
             document.cookie = "theme" + "=" + cookieValue + ";";
         }
-
-        //async function elementUpdate(selector) {
-        //    try {
-        //        var html = await (await fetch(location.href)).text();
-        //        var newdoc = new DOMParser().parseFromString(html, 'text/html');
-        //        document.querySelector(selector).outerHTML = newdoc.querySelector(selector).outerHTML;
-        //        console.log('Элемент ' + selector + ' был успешно обновлен.');
-        //        return true;
-        //    } catch (err) {
-        //        console.error('При обновлении элемента ' + selector + ' произошла ошибка:', err);
-        //        return false;
-        //    }
-        //}
 
         $('.dropdown').on("mouseenter", () => {
             $(".dropdown > a").addClass('show')

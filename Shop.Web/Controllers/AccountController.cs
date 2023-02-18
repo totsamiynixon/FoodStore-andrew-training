@@ -20,10 +20,10 @@ namespace Shop.Web.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly Mapper _mapper;
-        private readonly ShoppingCart _shoppingCart;
+        private readonly IShoppingCart _shoppingCart;
         private readonly IOrder _orderService;
 
-        public AccountController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ShoppingCart shoppingCart, IOrder orderService)
+        public AccountController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IShoppingCart shoppingCart, IOrder orderService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -175,6 +175,7 @@ namespace Shop.Web.Controllers
 
                 if (result.Succeeded)
                 {
+                    //_shoppingCart.Id = register.Email;                                                            // to do 
                     var loginModel = new AccountLoginModel
                     {
                         Email = register.Email,

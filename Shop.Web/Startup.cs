@@ -52,9 +52,9 @@ namespace Shop.Web
             services.AddTransient<ICategory, CategoryService>();
             services.AddTransient<IFood, FoodService>();
             services.AddTransient<IOrder, OrderService>();
-
+            // services.AddTransient<IShoppingCart, ShoppingCartService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped(sp => ShoppingCardHelper.GetCart(sp));
+            services.AddScoped<IShoppingCart>(sp => ShoppingCardHelper.GetCart(sp));
 
             services.AddMvc((opt) =>
             {

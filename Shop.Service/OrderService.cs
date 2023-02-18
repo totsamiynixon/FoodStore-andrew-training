@@ -11,9 +11,9 @@ namespace Shop.Service
     public class OrderService : IOrder
     {
         private readonly ApplicationDbContext _context;
-        private readonly ShoppingCart _shoppingCart;
+        private readonly IShoppingCart _shoppingCart;
 
-        public OrderService(ApplicationDbContext context, ShoppingCart shoppingCart)
+        public OrderService(ApplicationDbContext context, IShoppingCart shoppingCart)
         {
             _context = context;
             _shoppingCart = shoppingCart;

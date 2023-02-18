@@ -15,12 +15,12 @@ namespace Shop.Web.Controllers
     {
         private readonly IOrder _orderService;
         private readonly IFood _foodService;
-        private readonly ShoppingCart _shoppingCart;
+        private readonly IShoppingCart _shoppingCart;
         private readonly Mapper _mapper;
         private static UserManager<ApplicationUser> _userManager;
 
 
-        public OrderController(IOrder orderService, IFood foodService, ShoppingCart shoppingCart, UserManager<ApplicationUser> userManager)
+        public OrderController(IOrder orderService, IFood foodService, ShoppingCartService shoppingCart, UserManager<ApplicationUser> userManager)
         {
             _orderService = orderService;
             _shoppingCart = shoppingCart;
