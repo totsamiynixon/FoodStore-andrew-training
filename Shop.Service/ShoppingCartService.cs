@@ -13,17 +13,22 @@ namespace Shop.Data.Models
 	{
 		private readonly ApplicationDbContext _context;
 		private readonly string _userId;
-        public ShoppingCartService(ApplicationDbContext context, string userId)
+		public ShoppingCartService(ApplicationDbContext context, string userId)
 		{
-			_context = context;
+            if (_userId == null)
+            {
+                _userId = Id;
+            }
+            _context = context;
 			_userId = userId;
-        }
+		}
 
-		public IEnumerable<ShoppingCartItem> ShoppingCartItems { get; set; }
+        public string Id { get; set; }
+
+        public IEnumerable<ShoppingCartItem> ShoppingCartItems { get; set; }
 
         public bool AddToCart(Food food, int amount)
 		{
-
             if (food.InStock == 0 || amount == 0)
 			{
 				return false;
