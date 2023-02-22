@@ -5,6 +5,8 @@ using Shop.Web.Models.Category;
 using Shop.Web.Models.Food;
 using Shop.Web.DataMapper;
 using System.Linq;
+using Shop.Web.Models;
+using System.Collections.Generic;
 
 namespace Shop.Web.Controllers
 {
@@ -40,12 +42,12 @@ namespace Shop.Web.Controllers
 			return View(model);
 		}
 
-		public IActionResult Topic(int id, string searchQuery)
+		public IActionResult Topic(int id, string searchQuery, SortState sortOrder)
 		{
 			var category = _categoryService.GetById(id);
 			var foods = _foodService.GetFilteredFoods(id, searchQuery);
 
-			var foodListings = foods.Select(food => new FoodListingModel
+            var foodListings = foods.Select(food => new FoodListingModel
 			{
 				Id = food.Id,
 				Name = food.Name,
@@ -62,7 +64,23 @@ namespace Shop.Web.Controllers
 				Foods = foodListings
 			};
 
-			return View(model);
+			if (sortOrder == SortState.PriceAsc)
+			{
+                model.Foods = model.Foods.OrderBy(food => food.Price);
+                return View(model);
+            }
+
+            if (sortOrder == SortState.PriceDesc)
+            {
+                model.Foods = model.Foods.OrderByDescending(food => food.Price);
+                return View(model);
+            }
+			if(sortOrder == SortState.None)
+			{
+				return View(model);
+			}
+
+            return View(model);
 		}
 
 		public IActionResult Search(int id, string searchQuery)

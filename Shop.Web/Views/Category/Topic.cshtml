@@ -28,6 +28,24 @@
                     </div>
                     <input asp-for="Category.Id" name="id" type="hidden" />
                 </form>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" id="drop" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                           asp-controller="Category" asp-action="Index">Sorting</a>
+                        <div class="dropdown-menu" aria-labelledby="drop">
+                            <a class="dropdown-item" asp-controller="Category" asp-action="Topic" asp-route-sortOrder="@SortState.None">
+                                None
+                            </a>
+                            <a class="dropdown-item" asp-controller="Category" asp-action="Topic" asp-route-sortOrder="@SortState.PriceAsc">
+                                Ascending
+                            </a>
+                            <a class="dropdown-item" asp-controller="Category" asp-action="Topic" asp-route-sortOrder="@SortState.PriceDesc">
+                                Descending
+                            </a>
+                            @*@await Component.InvokeAsync("CategoriesName");*@
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
         @if(User.IsInRole("Admin"))
