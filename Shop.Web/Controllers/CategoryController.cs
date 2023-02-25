@@ -7,6 +7,7 @@ using Shop.Web.DataMapper;
 using System.Linq;
 using Shop.Web.Models;
 using System.Collections.Generic;
+using System;
 
 namespace Shop.Web.Controllers
 {
@@ -25,7 +26,7 @@ namespace Shop.Web.Controllers
 
 		public IActionResult Index()
 		{
-			var categories = _categoryService.GetAll().
+            var categories = _categoryService.GetAll().
 				Select(category => new CategoryListingModel
 				{
 					Name = category.Name,
@@ -81,6 +82,48 @@ namespace Shop.Web.Controllers
 			}
 
             return View(model);
+		}
+
+		[HttpPost]
+		public IActionResult Topic(int id, FilterState priceValue)
+		{
+			var category = _categoryService.GetById(id);
+			var foods = _foodService.GetFoodsByCategoryId(id);
+
+            // var form = Request.Form;
+            // Попробовать реализовать через Component               to do 
+
+            var minPrice = priceValue.MinPrice;
+			var maxPrice = priceValue.MaxPrice;
+            
+            var foodListings = foods.Select(food => new FoodListingModel
+			{
+				Id = food.Id,
+				Name = food.Name,
+				InStock = food.InStock,
+				Price = food.Price,
+				ShortDescription = food.ShortDescription,
+				Category = _mapper.FoodToCategoryListing(food),
+				ImageUrl = food.ImageUrl
+			});
+
+			var model = new CategoryTopicModel
+			{
+				Category = _mapper.CategoryToCategoryListing(category),
+				Foods = foodListings
+			};
+
+			if(Convert.ToBoolean(minPrice))
+			{
+                model.Foods = model.Foods.Where(x => x.Price <= minPrice);
+            }
+			if (Convert.ToBoolean(maxPrice))
+			{
+                model.Foods = model.Foods.Where(x => x.Price >= maxPrice);
+            }
+			
+
+			return View(model);
 		}
 
 		public IActionResult Search(int id, string searchQuery)
@@ -155,15 +198,6 @@ namespace Shop.Web.Controllers
 
 			return View("CreateEdit",model);
 		}
-
-		//[HttpPost]
-  //      [Authorize(Roles = "Admin")]
-  //      public IActionResult Delete(CategoryListingModel model)
-  //      {
-  //          _categoryService.DeleteCategory(model.Id);
-
-  //          return RedirectToAction("Index");
-  //      }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
