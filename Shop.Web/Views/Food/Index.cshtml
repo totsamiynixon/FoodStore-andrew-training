@@ -42,6 +42,14 @@
                         <div>
                             <a class="btn btn-default" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
                             <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                            <br>
+                            <div>
+                                @*<input data-val="true"  id="IsVisible" length="4" name="IsVisible" type="checkbox">*@
+                                @Html.CheckBoxFor(model => model.IsVisible, htmlAttributes: new { @disabled = true, @checked = true} ) Visibility
+                           
+                            @*<input value="isVisible" type="checkbox" class="btn btn-success" *@
+                           @* asp-controller="ShoppingCart" asp-action="Add" asp-route-id="@Model.Id" asp-route-amount="@Model.Amount" asp-route-returnUrl="@Context.Request.Path"*@
+                           </div>
                         </div>
                     }
                 </form>

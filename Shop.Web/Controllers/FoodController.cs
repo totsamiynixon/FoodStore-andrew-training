@@ -36,7 +36,8 @@ namespace Shop.Web.Controllers
                 Price = food.Price,
                 Description = food.ShortDescription + "\n" + food.LongDescription,
                 CategoryId = food.Category.Id,
-                CategoryName = food.Category.Name
+                CategoryName = food.Category.Name,
+                IsVisible = food.IsVisible,
             };
 
             return View(model);
@@ -48,7 +49,7 @@ namespace Shop.Web.Controllers
             GetCategoriesForDropDownList();
             NewFoodModel model = new NewFoodModel
             {
-                CategoryId = categoryId
+                CategoryId = categoryId,
             };
 
             ViewBag.ActionText = "create";

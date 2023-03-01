@@ -66,8 +66,9 @@ namespace Shop.Web.DataMapper
                 LongDescription = food.LongDescription,
                 Price = food.Price,
                 ShortDescription = food.ShortDescription,
+                IsVisible = food.IsVisible
             };
-        }
+    }
 
 
         public Food NewFoodModelToFood(NewFoodModel model, bool newInstance, ICategory categoryService)
@@ -83,6 +84,7 @@ namespace Shop.Web.DataMapper
                 LongDescription = model.LongDescription,
                 Price = model.Price.Value,
                 ShortDescription = model.ShortDescription,
+                IsVisible = model.IsVisible
             };
 
             if (!newInstance)
