@@ -15,6 +15,6 @@ namespace Shop.Web.Models.Food
         public string ShortDescription { get; set; }
         public int Amount { get; set; } = 1;
         public CategoryListingModel Category { get; set; }
-        public bool CheckboxVisibility { get; set; } 
+        public bool IsVisible { get; set; }
     }
 }

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Shop.Data;
+using Shop.Data.Models;
 using Shop.Service;
 using Shop.Web.DataMapper;
 using Shop.Web.Models;
@@ -14,11 +16,13 @@ namespace Shop.Web.Controllers
     {
         private readonly IFood _foodService;
         private readonly Mapper _mapper;
+        private static UserManager<ApplicationUser> _userManager;
 
-        public HomeController(IFood foodService)
+        public HomeController(IFood foodService, UserManager<ApplicationUser> userManager)
         {
             _foodService = foodService;
             _mapper = new Mapper();
+            _userManager = userManager;
         }
 
         [Route("/")]
@@ -26,6 +30,14 @@ namespace Shop.Web.Controllers
         {
             var preferedFoods = _foodService.GetPreferred(10);
             var model = _mapper.FoodsToHomeIndexModel(preferedFoods);
+
+            if (User.IsInRole("Admin"))
+            {
+                return View(model);
+            };
+
+                model.FoodsList = model.FoodsList.Where(food => food.IsVisible == true);
+            
             return View(model);
         }
 

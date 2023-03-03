@@ -119,7 +119,8 @@ namespace Shop.Web.DataMapper
                 ImageUrl = food.ImageUrl,
                 InStock = food.InStock,
                 Price = food.Price,
-                ShortDescription = food.ShortDescription
+                ShortDescription = food.ShortDescription,
+                IsVisible = food.IsVisible
             });
 
             return new HomeIndexModel
