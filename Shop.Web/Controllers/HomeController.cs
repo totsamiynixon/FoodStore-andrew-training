@@ -16,13 +16,11 @@ namespace Shop.Web.Controllers
     {
         private readonly IFood _foodService;
         private readonly Mapper _mapper;
-        private static UserManager<ApplicationUser> _userManager;
 
-        public HomeController(IFood foodService, UserManager<ApplicationUser> userManager)
+        public HomeController(IFood foodService)
         {
             _foodService = foodService;
             _mapper = new Mapper();
-            _userManager = userManager;
         }
 
         [Route("/")]

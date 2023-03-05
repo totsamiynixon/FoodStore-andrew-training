@@ -13,13 +13,15 @@ namespace Shop.Web.Controllers
     {
         private readonly ICategory _categoryService;
         private readonly IFood _foodService;
+        private readonly IShoppingCart _shoppingCartService;
         private readonly Mapper _mapper;
 
-        public FoodController(ICategory categoryService, IFood foodService)
+        public FoodController(ICategory categoryService, IFood foodService, IShoppingCart shoppingCartService)
         {
             _categoryService = categoryService;
             _foodService = foodService;
             _mapper = new Mapper();
+            _shoppingCartService = shoppingCartService;
         }
 
         [Route("Foods/{id}")]

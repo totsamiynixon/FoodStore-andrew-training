@@ -48,7 +48,7 @@ namespace Shop.Web.Controllers
 			var category = _categoryService.GetById(id);
 			var foods = _foodService.GetFilteredFoods(id, searchQuery);
 
-            var foodListings = foods.Select(food => new FoodListingModel
+			var foodListings = foods.Select(food => new FoodListingModel
 			{
 				Id = food.Id,
 				Name = food.Name,
@@ -56,8 +56,14 @@ namespace Shop.Web.Controllers
 				Price = food.Price,
 				ShortDescription = food.ShortDescription,
 				Category = _mapper.FoodToCategoryListing(food),
-				ImageUrl = food.ImageUrl
+				ImageUrl = food.ImageUrl,
+                IsVisible = food.IsVisible
 			});
+
+			if(!User.IsInRole("Admin")) 
+			{
+                foodListings = foodListings.Where(x => x.IsVisible == true);
+            }
 
 			var model = new CategoryTopicModel
 			{
