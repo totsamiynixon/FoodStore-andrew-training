@@ -48,6 +48,22 @@ namespace Shop.Web.DataMapper
             };
         }
 
+        public CategoryIndexModel CategoriesToCategoryIndexModel(IEnumerable<Category> categories)
+        {
+            var categoryListingModel = categories.Select( category => new CategoryListingModel
+            {
+                Name = category.Name,
+                Description = category.Description,
+                Id = category.Id,
+                ImageUrl = category.ImageUrl
+            });
+
+            return new CategoryIndexModel
+            {
+                CategoryList = categoryListingModel
+            };
+        }
+
         #endregion
 
 

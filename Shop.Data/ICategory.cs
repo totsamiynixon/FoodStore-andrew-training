@@ -10,5 +10,6 @@ namespace Shop.Data
         void NewCategory(Category category);
         void EditCategory(Category category);
         void DeleteCategory(int id);
+        IEnumerable<Category> GetFilteredCategory (string searchQuery);
     }
 }

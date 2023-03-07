@@ -8,6 +8,7 @@ using System.Linq;
 using Shop.Web.Models;
 using System.Collections.Generic;
 using System;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 
 namespace Shop.Web.Controllers
 {
@@ -26,19 +27,8 @@ namespace Shop.Web.Controllers
 
 		public IActionResult Index()
 		{
-            var categories = _categoryService.GetAll().
-				Select(category => new CategoryListingModel
-				{
-					Name = category.Name,
-					Description = category.Description,
-					Id = category.Id,
-					ImageUrl = category.ImageUrl
-				});
-
-			var model = new CategoryIndexModel
-			{
-				CategoryList = categories
-			};
+			var categories = _categoryService.GetAll();
+			var model = _mapper.CategoriesToCategoryIndexModel(categories);
 
 			return View(model);
 		}
@@ -213,7 +203,18 @@ namespace Shop.Web.Controllers
 
             return RedirectToAction("Index");
         }
+		[HttpPost]
+		public IActionResult Search(string searchQuery)
+		{
+			if(string.IsNullOrWhiteSpace(searchQuery) || string.IsNullOrEmpty(searchQuery))
+			{
+				return RedirectToAction("Index");
+			}
 
+			var searchCategory = _categoryService.GetFilteredCategory(searchQuery);
+			var model = _mapper.CategoriesToCategoryIndexModel(searchCategory);
 
+			return View(model);
+		}
     }
 }

@@ -54,6 +54,7 @@ namespace Shop.Web.Controllers
             var searchedFoods = _foodService.GetFilteredFoods(searchQuery);
             var model = _mapper.FoodsToHomeIndexModel(searchedFoods);
 
+            
             return View(model);
         }
     }
