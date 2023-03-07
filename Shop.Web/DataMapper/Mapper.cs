@@ -48,6 +48,22 @@ namespace Shop.Web.DataMapper
             };
         }
 
+        public CategoryIndexModel CategoriesToCategoryIndexModel(IEnumerable<Category> categories)
+        {
+            var categoryListingModel = categories.Select( category => new CategoryListingModel
+            {
+                Name = category.Name,
+                Description = category.Description,
+                Id = category.Id,
+                ImageUrl = category.ImageUrl
+            });
+
+            return new CategoryIndexModel
+            {
+                CategoryList = categoryListingModel
+            };
+        }
+
         #endregion
 
 
@@ -66,8 +82,9 @@ namespace Shop.Web.DataMapper
                 LongDescription = food.LongDescription,
                 Price = food.Price,
                 ShortDescription = food.ShortDescription,
+                IsVisible = food.IsVisible
             };
-        }
+    }
 
 
         public Food NewFoodModelToFood(NewFoodModel model, bool newInstance, ICategory categoryService)
@@ -83,6 +100,7 @@ namespace Shop.Web.DataMapper
                 LongDescription = model.LongDescription,
                 Price = model.Price.Value,
                 ShortDescription = model.ShortDescription,
+                IsVisible = model.IsVisible
             };
 
             if (!newInstance)
@@ -117,7 +135,8 @@ namespace Shop.Web.DataMapper
                 ImageUrl = food.ImageUrl,
                 InStock = food.InStock,
                 Price = food.Price,
-                ShortDescription = food.ShortDescription
+                ShortDescription = food.ShortDescription,
+                IsVisible = food.IsVisible
             });
 
             return new HomeIndexModel

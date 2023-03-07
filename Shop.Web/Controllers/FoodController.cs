@@ -13,13 +13,15 @@ namespace Shop.Web.Controllers
     {
         private readonly ICategory _categoryService;
         private readonly IFood _foodService;
+        private readonly IShoppingCart _shoppingCartService;
         private readonly Mapper _mapper;
 
-        public FoodController(ICategory categoryService, IFood foodService)
+        public FoodController(ICategory categoryService, IFood foodService, IShoppingCart shoppingCartService)
         {
             _categoryService = categoryService;
             _foodService = foodService;
             _mapper = new Mapper();
+            _shoppingCartService = shoppingCartService;
         }
 
         [Route("Foods/{id}")]
@@ -36,7 +38,8 @@ namespace Shop.Web.Controllers
                 Price = food.Price,
                 Description = food.ShortDescription + "\n" + food.LongDescription,
                 CategoryId = food.Category.Id,
-                CategoryName = food.Category.Name
+                CategoryName = food.Category.Name,
+                IsVisible = food.IsVisible,
             };
 
             return View(model);
@@ -48,7 +51,7 @@ namespace Shop.Web.Controllers
             GetCategoriesForDropDownList();
             NewFoodModel model = new NewFoodModel
             {
-                CategoryId = categoryId
+                CategoryId = categoryId,
             };
 
             ViewBag.ActionText = "create";

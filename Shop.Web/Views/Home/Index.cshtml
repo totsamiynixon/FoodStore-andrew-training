@@ -19,7 +19,7 @@
             <tbody>
                 @foreach (var food in Model.FoodsList)
                 {
-                    <tr>
+                    <tr class="@(food.IsVisible ? "" : "hide")" >
                         <td>
                            @Html.Partial("FoodSummary", food) 
                         </td>

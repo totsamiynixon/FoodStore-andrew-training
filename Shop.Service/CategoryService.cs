@@ -4,6 +4,7 @@ using Shop.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Shop.Service
 {
@@ -41,6 +42,17 @@ namespace Shop.Service
         {
             _context.Add(category);
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Category> GetFilteredCategory(string searchQuery)
+        {
+            var queries = string.IsNullOrEmpty(searchQuery) ? null : Regex.Replace(searchQuery, @"\s+", " ").Trim().Split(" ");
+            if(queries == null)
+            {
+                return GetAll();
+            }
+
+            return GetAll().Where(item => queries.Any(query => (item.Name.ToLower().Contains(query.ToLower()))));
         }
 
         public void DeleteCategory(int id)

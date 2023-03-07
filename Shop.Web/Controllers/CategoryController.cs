@@ -7,6 +7,8 @@ using Shop.Web.DataMapper;
 using System.Linq;
 using Shop.Web.Models;
 using System.Collections.Generic;
+using System;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 
 namespace Shop.Web.Controllers
 {
@@ -25,19 +27,8 @@ namespace Shop.Web.Controllers
 
 		public IActionResult Index()
 		{
-			var categories = _categoryService.GetAll().
-				Select(category => new CategoryListingModel
-				{
-					Name = category.Name,
-					Description = category.Description,
-					Id = category.Id,
-					ImageUrl = category.ImageUrl
-				});
-
-			var model = new CategoryIndexModel
-			{
-				CategoryList = categories
-			};
+			var categories = _categoryService.GetAll();
+			var model = _mapper.CategoriesToCategoryIndexModel(categories);
 
 			return View(model);
 		}
@@ -47,7 +38,7 @@ namespace Shop.Web.Controllers
 			var category = _categoryService.GetById(id);
 			var foods = _foodService.GetFilteredFoods(id, searchQuery);
 
-            var foodListings = foods.Select(food => new FoodListingModel
+			var foodListings = foods.Select(food => new FoodListingModel
 			{
 				Id = food.Id,
 				Name = food.Name,
@@ -55,8 +46,14 @@ namespace Shop.Web.Controllers
 				Price = food.Price,
 				ShortDescription = food.ShortDescription,
 				Category = _mapper.FoodToCategoryListing(food),
-				ImageUrl = food.ImageUrl
+				ImageUrl = food.ImageUrl,
+                IsVisible = food.IsVisible
 			});
+
+			if(!User.IsInRole("Admin")) 
+			{
+                foodListings = foodListings.Where(x => x.IsVisible == true);
+            }
 
 			var model = new CategoryTopicModel
 			{
@@ -81,6 +78,48 @@ namespace Shop.Web.Controllers
 			}
 
             return View(model);
+		}
+
+		[HttpPost]
+		public IActionResult Topic(int id, FilterState priceValue)
+		{
+			var category = _categoryService.GetById(id);
+			var foods = _foodService.GetFoodsByCategoryId(id);
+
+            // var form = Request.Form;
+            // Попробовать реализовать через Component               to do 
+
+            var minPrice = priceValue.MinPrice;
+			var maxPrice = priceValue.MaxPrice;
+            
+            var foodListings = foods.Select(food => new FoodListingModel
+			{
+				Id = food.Id,
+				Name = food.Name,
+				InStock = food.InStock,
+				Price = food.Price,
+				ShortDescription = food.ShortDescription,
+				Category = _mapper.FoodToCategoryListing(food),
+				ImageUrl = food.ImageUrl
+			});
+
+			var model = new CategoryTopicModel
+			{
+				Category = _mapper.CategoryToCategoryListing(category),
+				Foods = foodListings
+			};
+
+			if(Convert.ToBoolean(minPrice))
+			{
+                model.Foods = model.Foods.Where(x => x.Price <= minPrice);
+            }
+			if (Convert.ToBoolean(maxPrice))
+			{
+                model.Foods = model.Foods.Where(x => x.Price >= maxPrice);
+            }
+			
+
+			return View(model);
 		}
 
 		public IActionResult Search(int id, string searchQuery)
@@ -156,15 +195,6 @@ namespace Shop.Web.Controllers
 			return View("CreateEdit",model);
 		}
 
-		//[HttpPost]
-  //      [Authorize(Roles = "Admin")]
-  //      public IActionResult Delete(CategoryListingModel model)
-  //      {
-  //          _categoryService.DeleteCategory(model.Id);
-
-  //          return RedirectToAction("Index");
-  //      }
-
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
@@ -173,7 +203,18 @@ namespace Shop.Web.Controllers
 
             return RedirectToAction("Index");
         }
+		[HttpPost]
+		public IActionResult Search(string searchQuery)
+		{
+			if(string.IsNullOrWhiteSpace(searchQuery) || string.IsNullOrEmpty(searchQuery))
+			{
+				return RedirectToAction("Index");
+			}
 
+			var searchCategory = _categoryService.GetFilteredCategory(searchQuery);
+			var model = _mapper.CategoriesToCategoryIndexModel(searchCategory);
 
+			return View(model);
+		}
     }
 }

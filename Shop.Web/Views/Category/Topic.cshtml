@@ -1,4 +1,5 @@
 ﻿@model Shop.Web.Models.Category.CategoryTopicModel
+@using Shop.Web.Models;
 
 @using Microsoft.AspNetCore.Identity
 @using Shop.Data.Models
@@ -8,7 +9,7 @@
 <div class="container body-content">
     <div class="sectionHeader">
         <div class="sectionHeading">
-            <h3><span id="results">@Model.Category.Name</span><h3/>
+            <h3><span id="results">@Model.Category.Name</span><h3 />
         </div>
         <div class="row">
             <div class="col-md-8 sectionDescription">
@@ -28,9 +29,24 @@
                     </div>
                     <input asp-for="Category.Id" name="id" type="hidden" />
                 </form>
+
+                <form asp-controller="Category" asp-action="Topic" method="post">
+                    <div class="searchForm">
+                        @*не могу подключить модель FilterState через asp-for*@
+                        @* почему мне надо обернуть input отдельно в form чтобы отправлять данные.
+                        Почему я не могу использовать два input в одной форме и отправлять данные?  *@
+
+                        <input type="text" name="MinPrice" placeholder="Min price" class="searchBar" onfocus="clearThis(this)">
+                    </div>
+                </form>
+                <form asp-controller="Category" asp-action="Topic" method="post">
+                    <div class="searchForm">
+                        <input type="text" name="MaxPrice" placeholder="Max price" class="searchBar" onfocus="clearThis(this)">
+                    </div>
+                </form>
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle" id="drop" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                        <a class="nav-link dropdown-toggle" id="drop" role="b tton" data-bs-toggle="dropdown" aria-expanded="false"
                            asp-controller="Category" asp-action="Index">Sorting</a>
                         <div class="dropdown-menu" aria-labelledby="drop">
                             <a class="dropdown-item" asp-controller="Category" asp-action="Topic" asp-route-sortOrder="@SortState.None">
@@ -44,11 +60,15 @@
                             </a>
                             @*@await Component.InvokeAsync("CategoriesName");*@
                         </div>
+
                     </li>
                 </ul>
+
+
+
             </div>
         </div>
-        @if(User.IsInRole("Admin"))
+        @if (User.IsInRole("Admin"))
         {
             <div class="row">
                 <div class="col-md-11"></div>
@@ -57,19 +77,19 @@
                         <a class="btn btn-default" asp-controller="Category" asp-action="Edit" asp-route-id="@Model.Category.Id">Edit</a>
                     </div>
                     <div class="row">
-                        <form asp-controller="Category" asp-action="Delete"  method="post">
+                        <form asp-controller="Category" asp-action="Delete" method="post">
 
                             <input type="hidden" asp-for="Category.Id" value="@Model.Category.Id" name="id" />
                             <input type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Are sure you want to delete category?');" />
                         </form>
                         @*@Html.ActionLink("Delete", "Delete", new { id = @Model.Category.Id },
-                new { onclick = "return confirm('Are sure you want to delete category?');", @class="btn btn-danger" })*@
+                    new { onclick = "return confirm('Are sure you want to delete category?');", @class="btn btn-danger" })*@
                     </div>
                 </div>
             </div>
         }
     </div>
-    @if(User.IsInRole("Admin"))
+    @if (User.IsInRole("Admin"))
     {
         <div class="newFood">
             <a class="btn btn-block btn-default" asp-controller="Food" asp-action="New" asp-route-categoryId="@Model.Category.Id">New food</a>
@@ -82,9 +102,9 @@
                 <tbody>
                     @foreach (var food in Model.Foods)
                     {
-                        <tr>
+                        <tr class="@(food.IsVisible ? "" : "hide")">
                             <td>
-                               @Html.Partial("FoodSummary",food) 
+                                @Html.Partial("FoodSummary",food)
                             </td>
                         </tr>
                     }

@@ -4,6 +4,17 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+<div class="row frontPageSplash minHeightForSearch">
+    <div class="col-md-6 frontPageLearn" style="height: 0">
+            <div>
+                <form asp-controller="Category" asp-action="Search" method="post">
+                    <input name="SearchQuery" type="text" class="homeSearch" placeholder="Search category..." />
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+
 <h1>Food categories</h1>
 
 @if(User.IsInRole("Admin"))
@@ -20,7 +31,7 @@ else
 {
     <table class="table table-hover" id="categoryIndexTable">
         <tbody>
-            @foreach (var category in Model.CategoryList)
+            @foreach (var category in this.Model.CategoryList)
             {
                 <tr>
                     <td>

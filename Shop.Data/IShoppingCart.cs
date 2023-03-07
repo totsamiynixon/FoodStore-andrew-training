@@ -14,6 +14,7 @@ namespace Shop.Data
         public int RemoveFromCart(Food food);
         public IEnumerable<ShoppingCartItem> GetShoppingCartItems();
         public void ClearCart();
+        public void ClearCartItems();
         public decimal GetShoppingCartTotal();
     }
 }

@@ -1319,6 +1319,21 @@ body{
         color: #ffffff !important;
     }
 
+.hide {
+    background: #000;
+    opacity: 0.6;
+}
+
+.minHeightForSearch {
+    height: 150px;
+}
+
+.frontPageLearnMinHeight {
+    height: 0;
+}
+
+
+
 /*.dropdown:hover .dropdown-menu {
     display: flex;
     flex-wrap: wrap;

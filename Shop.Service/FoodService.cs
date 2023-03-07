@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Shop.Data;
 using Shop.Data.Models;
 using System;
@@ -22,6 +23,13 @@ namespace Shop.Service
             var model = _context.Foods.First(f => f.Id == food.Id);
             _context.Entry<Food>(model).State = EntityState.Detached;
             _context.Update(food);
+
+            if (!food.IsVisible)
+            {
+                var shoppingCartItemToDelete = _context.ShoppingCartItems.Where(item => item.FoodId == food.Id);
+                _context.ShoppingCartItems.RemoveRange(shoppingCartItemToDelete);
+            }
+
             _context.SaveChanges();
         }
 		public IEnumerable<Food> GetAll()

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Shop.Data;
+using Shop.Data.Models;
 using Shop.Service;
 using Shop.Web.DataMapper;
 using Shop.Web.Models;
@@ -26,6 +28,14 @@ namespace Shop.Web.Controllers
         {
             var preferedFoods = _foodService.GetPreferred(10);
             var model = _mapper.FoodsToHomeIndexModel(preferedFoods);
+
+            if (User.IsInRole("Admin"))
+            {
+                return View(model);
+            };
+
+                model.FoodsList = model.FoodsList.Where(food => food.IsVisible == true);
+            
             return View(model);
         }
 
@@ -44,6 +54,7 @@ namespace Shop.Web.Controllers
             var searchedFoods = _foodService.GetFilteredFoods(searchQuery);
             var model = _mapper.FoodsToHomeIndexModel(searchedFoods);
 
+            
             return View(model);
         }
     }

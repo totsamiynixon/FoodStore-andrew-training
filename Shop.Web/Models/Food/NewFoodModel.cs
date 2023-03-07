@@ -39,5 +39,6 @@ namespace Shop.Web.Models.Food
         [Required(ErrorMessage = "Please select category")]
         [Range(1,double.MaxValue)]
         public int? CategoryId { get; set; }
-    }
+        public bool IsVisible { get; set; } = true;
+     }
 }
