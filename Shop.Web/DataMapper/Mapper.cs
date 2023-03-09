@@ -28,6 +28,7 @@ namespace Shop.Web.DataMapper
                 Name = model.Name,
                 Description = model.Description,
                 ImageUrl = model.ImageUrl,
+                IsVisible= model.IsVisible,
             };
         }
 
@@ -44,7 +45,8 @@ namespace Shop.Web.DataMapper
                 Name = category.Name,
                 Description = category.Description,
                 Id = category.Id,
-                ImageUrl = category.ImageUrl
+                ImageUrl = category.ImageUrl,
+                IsVisible = category.IsVisible
             };
         }
 
@@ -55,7 +57,8 @@ namespace Shop.Web.DataMapper
                 Name = category.Name,
                 Description = category.Description,
                 Id = category.Id,
-                ImageUrl = category.ImageUrl
+                ImageUrl = category.ImageUrl,
+                IsVisible = category.IsVisible,
             });
 
             return new CategoryIndexModel

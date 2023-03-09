@@ -17,5 +17,6 @@ namespace Shop.Web.Models.Category
         [Required(ErrorMessage = "Please enter url of the category image")]
         [Display(Name = "Image url*")]
         public string ImageUrl { get; set; }
+        public bool IsVisible { get; set; }
     }
 }

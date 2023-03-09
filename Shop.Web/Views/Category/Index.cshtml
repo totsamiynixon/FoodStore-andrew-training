@@ -6,26 +6,26 @@
 
 <div class="row frontPageSplash minHeightForSearch">
     <div class="col-md-6 frontPageLearn" style="height: 0">
-            <div>
-                <form asp-controller="Category" asp-action="Search" method="post">
-                    <input name="SearchQuery" type="text" class="homeSearch" placeholder="Search category..." />
-                </form>
-            </div>
+        <div>
+            <form asp-controller="Category" asp-action="Search" method="post">
+                <input name="SearchQuery" type="text" class="homeSearch" placeholder="Search category..." />
+            </form>
         </div>
-        <div class="col-md-6"></div>
     </div>
+    <div class="col-md-6"></div>
+</div>
 
 <h1>Food categories</h1>
 
-@if(User.IsInRole("Admin"))
+@if (User.IsInRole("Admin"))
 {
     <div>
         <a class="btn btn-block btn-default" asp-controller="Category" asp-action="New">New category</a>
     </div>
 }
-@if(!Model.CategoryList.Any())
+@if (!Model.CategoryList.Any())
 {
-<h3>It looks like there are no categories right now...</h3>
+    <h3>It looks like there are no categories right now...</h3>
 }
 else
 {
@@ -33,16 +33,20 @@ else
         <tbody>
             @foreach (var category in this.Model.CategoryList)
             {
-                <tr>
+                <tr class="@(category.IsVisible ? "" : "hide")">
                     <td>
-                        
                         <div class="categoryLogo" style="background-image: url(@category.ImageUrl); background-size:100%;"></div>
                         <a class="btn btn-info" asp-controller="Category" asp-action="Topic" asp-route-id="@category.Id">
                             @category.Name
                         </a>
                     </td>
-                    <td>
-                        @category.Description
+                    <td style="position: relative">
+                        @category.Description;
+                        <div class="form-check" style="position: absolute; bottom: 20px; right: 30px">
+                            <input type="checkbox" asp-for="@category.IsVisible" disabled />
+                            <label>is Visible</label>
+                        </div>
+
                     </td>
                 </tr>
             }
