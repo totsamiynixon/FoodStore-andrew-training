@@ -42,11 +42,13 @@ else
                     </td>
                     <td style="position: relative">
                         @category.Description;
+                        @if (User.IsInRole("Admin"))
+                        {
                         <div class="form-check" style="position: absolute; bottom: 20px; right: 30px">
                             <input type="checkbox" asp-for="@category.IsVisible" disabled />
                             <label>is Visible</label>
                         </div>
-
+                        } 
                     </td>
                 </tr>
             }

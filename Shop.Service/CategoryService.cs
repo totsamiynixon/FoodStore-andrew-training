@@ -20,6 +20,18 @@ namespace Shop.Service
 		public void EditCategory(Category category)
         {
             _context.Update(category);
+
+            if (!category.IsVisible)
+            {
+                //var shoppingCartItemToDelete = _context.ShoppingCartItems.Where(
+                //    item => category.Foods.Any(food => food.Id == item.FoodId));
+
+                var list = _context.Foods.Where(food => food.CategoryId == category.Id);
+                var DelList = _context.ShoppingCartItems.Where(item => list.Any(food => food.Id == item.FoodId));
+
+                _context.ShoppingCartItems.RemoveRange(DelList);
+            }
+            
             _context.SaveChanges();
         }
 

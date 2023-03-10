@@ -20,6 +20,7 @@ namespace Shop.Web.Components
                {
                    Name = category.Name,
                    Id = category.Id,
+                   IsVisible = category.IsVisible,
                });
 
             ViewBag.Categories = new CategoryDropdownIndexModel

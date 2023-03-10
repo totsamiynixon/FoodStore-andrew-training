@@ -9,6 +9,8 @@ using Shop.Web.Models;
 using System.Collections.Generic;
 using System;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Shop.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Shop.Web.Controllers
 {
@@ -17,18 +19,29 @@ namespace Shop.Web.Controllers
 		private readonly ICategory _categoryService;
 		private readonly IFood _foodService;
         private readonly Mapper _mapper;
+		private static UserManager<ApplicationUser> _userManager;
 
-		public CategoryController(ICategory categoryService, IFood foodService)
+		public CategoryController(ICategory categoryService, IFood foodService, 
+			UserManager<ApplicationUser> userManager)
 		{
 			_categoryService = categoryService;
 			_foodService = foodService;
             _mapper = new Mapper();
+			_userManager = userManager;
 		}
 
 		public IActionResult Index()
 		{
+			
 			var categories = _categoryService.GetAll();
 			var model = _mapper.CategoriesToCategoryIndexModel(categories);
+
+            if (User.IsInRole("Admin"))
+            {
+                return View(model);
+            }
+
+			model.CategoryList = model.CategoryList.Where(category => category.IsVisible == true);
 
 			return View(model);
 		}
