@@ -19,6 +19,7 @@ namespace Shop.Web.Controllers
             _shoppingCartService = shoppingCartService;
         }
 
+
         public IActionResult Index(bool isValidAmount = true, string returnUrl = "/")
         {
             _shoppingCartService.GetShoppingCartItems();
