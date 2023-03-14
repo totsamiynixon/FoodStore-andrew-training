@@ -29,13 +29,8 @@
                     </div>
                     <input asp-for="Category.Id" name="id" type="hidden" />
                 </form>
-
                 <form asp-controller="Category" asp-action="Topic" method="post">
                     <div class="searchForm">
-                        @*не могу подключить модель FilterState через asp-for*@
-                        @* почему мне надо обернуть input отдельно в form чтобы отправлять данные.
-                        Почему я не могу использовать два input в одной форме и отправлять данные?  *@
-
                         <input type="text" name="MinPrice" placeholder="Min price" class="searchBar" onfocus="clearThis(this)">
                     </div>
                 </form>

@@ -14,26 +14,23 @@ using System.Linq;
 
 namespace Shop.Web.Controllers
 {
+   
     public class HomeController : Controller
     {
         private readonly IFood _foodService;
         private readonly Mapper _mapper;
-        private readonly IConfiguration _configuration;
-
         public HomeController(IFood foodService, IConfiguration configuration)
         {
             _foodService = foodService;
             _mapper = new Mapper();
-            _configuration = configuration;
         }
 
-        [TypeFilter(typeof(SimpleResourceFilter))]
+        
         [Route("/")]
         public IActionResult Index()
         {
             var preferedFoods = _foodService.GetPreferred(10);
             var model = _mapper.FoodsToHomeIndexModel(preferedFoods);
-            // bool config = _configuration.GetValue<bool>("Showcase");
 
             if (User.IsInRole("Admin"))
             {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shop.Data;
 using Shop.Data.Models;
 using Shop.Web.DataMapper;
+using Shop.Web.Filters;
 using Shop.Web.Models.Order;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 namespace Shop.Web.Controllers
 {
     [Authorize]
+    [TypeFilter(typeof(SimpleResourceFilter))]
     public class OrderController : Controller
     {
         private readonly IOrder _orderService;

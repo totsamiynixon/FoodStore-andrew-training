@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Data;
 using Shop.Data.Models;
+using Shop.Web.Filters;
 using Shop.Web.Models.ShoppingCart;
 
 namespace Shop.Web.Controllers
 {
     [Authorize]
+    [TypeFilter(typeof(SimpleResourceFilter))]
     public class ShoppingCartController : Controller
     {
         private readonly IFood _foodService;

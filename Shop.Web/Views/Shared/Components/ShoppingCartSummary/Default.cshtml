@@ -1,8 +1,27 @@
 ﻿@model Shop.Web.Models.ShoppingCart.ShoppingCartIndexModel
 
-<a asp-area="" asp-controller="ShoppingCart" asp-action="Index" style="padding:5px;color: rgba(0,0,0,.7);text-decoration: none;">
-    <i class="fas fa-shopping-cart fa-3x"></i>
-    <span style="font-size:20px; text-align:center; margin:5px;">
-        @Html.Raw(@Model.ShoppingCart.ShoppingCartItems.Count())
-    </span>
-</a>
+@using Microsoft.AspNetCore.Identity;
+@using Microsoft.Extensions.Configuration
+@using Shop.Data.Models;
+@using Shop.Web.Services;
+
+@inject IConfiguration Configuration
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject ShowcaseService Showcase
+
+@{
+    var isShowcase = Configuration.GetValue<bool>("Showcase");
+}
+
+@*@if ((User.IsInRole("Admin") & isShowcase == true) || (SignInManager.IsSignedIn(User) & isShowcase == false))*@
+@if (Showcase.Value)
+{
+    <a asp-area="" asp-controller="ShoppingCart" asp-action="Index" style="padding:5px;color: rgba(0,0,0,.7);text-decoration: none;">
+        <i class="fas fa-shopping-cart fa-3x"></i>
+        <span style="font-size:20px; text-align:center; margin:5px;">
+            @Html.Raw(@Model.ShoppingCart.ShoppingCartItems.Count())
+        </span>
+    </a>
+}
+
