@@ -15,7 +15,7 @@ namespace Shop.Data.Models
         public string LastName { get; set; } 
         public string Email { get; set; }
         public string Comment { get; set; }
-        public string CreatedDate { get; set; } = DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt");
+        public string CreatedDate { get; set; } = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt");
         // public bool IsMarried { get; set; }
     }
 }

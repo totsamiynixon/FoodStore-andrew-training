@@ -31,5 +31,12 @@ namespace Shop.Web.Controllers
 
             return View(model);
         }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult DetailComment()
+        {
+            return Content("OK I am cool guy"); 
+
+        }
     }
 }

@@ -1,11 +1,34 @@
 ﻿@model IEnumerable<Shop.Web.Models.ContactUs.ContactModel>
 
-@foreach (var comment in Model)
-{
-    <h3>@comment.FirstName</h3>
-    <h3>@comment.LastName</h3>
 
-    <h3>@comment.Email</h3>
-    <h3>@comment.Comment</h3>
-    <h3>@comment.CreatedDate</h3>
-}
+<table class="table table-hover table-dark table-stripped table-bordered">
+    <thead>
+        <tr>
+            <th class="text-right">Date</th>
+            <th class="text-right">First name</th>
+            <th class="text-right">Last name</th>
+            <th class="text-right">Email</th>
+            <th class="text-right">Text</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var comment in Model)
+        {
+            <tr>
+                <td class="text-center"><a class="btn btn-info" asp-controller="Contact" asp-action="DetailComment">@comment.CreatedDate</a></td>
+                <td class="text-left">@comment.FirstName</td>
+                <td class="text-left">@comment.LastName</td>
+                <td class="text-left">@comment.Email</td>
+                <td class="text-left">@comment.Comment</td>
+            </tr>
+        }
+    </tbody>
+@*    <tfoot>
+        <tr>
+            <td colspan="3" class="text-right">Total:</td>
+            <td class="text-right">
+                @(Model.ShoppingCartTotal.ToString("c", CultureInfo.CreateSpecificCulture("en-US")))
+            </td>
+        </tr>
+    </tfoot>*@
+</table>
