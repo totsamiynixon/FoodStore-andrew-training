@@ -18,13 +18,14 @@ namespace Shop.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IFood _foodService;
+        private readonly IContactUs _contactUs;
         private readonly Mapper _mapper;
-        public HomeController(IFood foodService, IConfiguration configuration)
+        public HomeController(IFood foodService, IConfiguration configuration, IContactUs contactUs)
         {
             _foodService = foodService;
+            _contactUs = contactUs;
             _mapper = new Mapper();
         }
-
         
         [Route("/")]
         public IActionResult Index()
@@ -59,6 +60,19 @@ namespace Shop.Web.Controllers
 
             
             return View(model);
+        }
+
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Contact(ContactUs contactModel)
+        {
+            var one = contactModel;
+            _contactUs.NewContactUs(contactModel);
+            return RedirectToAction("Index");
         }
     }
 }

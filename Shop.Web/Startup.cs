@@ -53,6 +53,7 @@ namespace Shop.Web
             services.AddTransient<ICategory, CategoryService>();
             services.AddTransient<IFood, FoodService>();
             services.AddTransient<IOrder, OrderService>();
+            services.AddTransient<IContactUs, ContactUsService>();
             services.AddTransient<ShowcaseService>();
             // services.AddTransient<IShoppingCart, ShoppingCartService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

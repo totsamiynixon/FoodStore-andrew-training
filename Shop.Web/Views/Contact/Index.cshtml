@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Shop.Web.Models.ContactUs.ContactModel>
+
+@foreach (var comment in Model)
+{
+    <h3>@comment.FirstName</h3>
+    <h3>@comment.LastName</h3>
+
+    <h3>@comment.Email</h3>
+    <h3>@comment.Comment</h3>
+    <h3>@comment.CreatedDate</h3>
+}
