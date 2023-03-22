@@ -11,8 +11,8 @@ using Shop.Data;
 namespace Shop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230318141612_contactUs")]
-    partial class contactUs
+    [Migration("20230321111816_createDate")]
+    partial class createDate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -274,6 +274,9 @@ namespace Shop.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Comment")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")

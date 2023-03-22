@@ -4,22 +4,21 @@
 
 namespace Shop.Data.Migrations
 {
-    public partial class IsMarriedToUserAdded : Migration
+    public partial class createDate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "IsMarried",
+            migrationBuilder.AddColumn<string>(
+                name: "CreatedDate",
                 table: "ContactUs",
-                type: "INTEGER",
-                nullable: false,
-                defaultValue: false);
+                type: "TEXT",
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsMarried",
+                name: "CreatedDate",
                 table: "ContactUs");
         }
     }

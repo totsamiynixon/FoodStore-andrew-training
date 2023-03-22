@@ -1,4 +1,6 @@
-﻿namespace Shop.Web.Models.ContactUs
+﻿using System;
+
+namespace Shop.Web.Models.ContactUs
 {
     public class ContactModel
     {
@@ -7,6 +9,6 @@
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Comment { get; set; }
-        public string CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

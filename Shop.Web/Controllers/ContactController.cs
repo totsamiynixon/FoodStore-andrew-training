@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Data;
+using Shop.Web.DataMapper;
 using Shop.Data.Models;
 using Shop.Web.Models.ContactUs;
 using System.Linq;
@@ -10,33 +11,30 @@ namespace Shop.Web.Controllers
     public class ContactController : Controller
     {
         private readonly IContactUs _contactUs;
+        private readonly Mapper _mapper;
         public ContactController(IContactUs contactUs)
         {
             _contactUs = contactUs;
+            _mapper = new Mapper();
         }
 
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             var comments = _contactUs.GetAll();
-            var model = comments.Select(comment => new ContactModel
-            {
-                Id = comment.Id,
-                FirstName = comment.FirstName,
-                LastName = comment.LastName,
-                Email = comment.Email,
-                Comment = comment.Comment,
-                CreatedDate = comment.CreatedDate
-            });
+            var model = _mapper.ContactUsToConatctModel(comments);
 
             return View(model);
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult DetailComment()
+        [Route("Contact/{id}")]
+        public IActionResult DetailComment(int id)
         {
-            return Content("OK I am cool guy"); 
+            var comment = _contactUs.GetById(id);
+            var model = _mapper.ContactUsToContactModel(comment);
 
+            return View(model); 
         }
     }
 }

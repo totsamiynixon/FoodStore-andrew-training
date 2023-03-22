@@ -12,10 +12,9 @@ namespace Shop.Data.Models
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
-        public string LastName { get; set; } 
+        public string LastName { get; set; }
         public string Email { get; set; }
         public string Comment { get; set; }
-        public string CreatedDate { get; set; } = DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt");
-        // public bool IsMarried { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now.ToLocalTime();
     }
 }

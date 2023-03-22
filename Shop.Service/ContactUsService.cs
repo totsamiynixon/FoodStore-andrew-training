@@ -1,4 +1,5 @@
-﻿using Shop.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Shop.Data;
 using Shop.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -25,9 +26,14 @@ namespace Shop.Service
 
         public IEnumerable<ContactUs> GetAll()
         {
-            return _context.ContactUs;
+            var comments = _context.ContactUs.AsNoTracking();
+            
+            return comments.OrderByDescending(comment => comment.CreatedDate); 
         }
-
+        public ContactUs GetById(int id)
+        {
+            return GetAll().FirstOrDefault(comment => comment.Id == id);
+        }
 
     }
 }
