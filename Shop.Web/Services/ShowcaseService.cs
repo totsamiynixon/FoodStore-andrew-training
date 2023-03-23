@@ -36,8 +36,12 @@ namespace Shop.Web.Services
             get
             {
                 var user = _httpContextAccessor.HttpContext.User;
-                if ( (user.IsInRole("Admin") & IsShowcase == true) || (_signInManager.IsSignedIn(user) & IsShowcase == false) )
-                    {
+                if ( (user.IsInRole("Admin") & IsShowcase == true) || (_signInManager.IsSignedIn(user) & IsShowcase == false) 
+                    || (!_signInManager.IsSignedIn(user) & IsShowcase == false)
+                    // (!user.Identity.IsAuthenticated & IsShowcase == false) || (user.Identity == null & IsShowcase == false)
+                    )
+                    
+                {
                   return true;
                 }
                 return false;
