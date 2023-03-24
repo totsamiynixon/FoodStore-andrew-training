@@ -9,12 +9,16 @@
         <a class="dropdown-item" asp-controller="Category" asp-action="Topic" asp-route-id="@category.Id">@category.Name</a>
     }
 }
-
-@foreach (var category in ViewBag.Categories.CategoryListName)
+else
 {
-    if (category.IsVisible)
+    @foreach (var category in ViewBag.Categories.CategoryListName)
     {
-        <a class="dropdown-item" asp-controller="Category" asp-action="Topic" asp-route-id="@category.Id">@category.Name</a>
+        if (category.IsVisible)
+        {
+            <a class="dropdown-item" asp-controller="Category" asp-action="Topic" asp-route-id="@category.Id">@category.Name</a>
+        }
     }
+
 }
+
 

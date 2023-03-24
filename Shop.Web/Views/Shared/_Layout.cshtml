@@ -63,7 +63,7 @@
                             <a class="nav-link dropdown-toggle" id="drop" role="button" data-bs-toggle="dropdown" aria-expanded="false"
                                asp-controller="Category" asp-action="Index">Categories</a>
                             <div class="dropdown-menu" aria-labelledby="drop">
-                                @await Component.InvokeAsync("CategoriesName");
+                                @await Component.InvokeAsync("CategoriesName")
                             </div>
                         </li>
                         @if (User.IsInRole("Admin"))
