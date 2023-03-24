@@ -59,7 +59,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarColor03">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item dropdown active">
+                        <li id="dropdownUp" class="nav-item dropdown active">
                             <a class="nav-link dropdown-toggle" id="drop" role="button" data-bs-toggle="dropdown" aria-expanded="false"
                                asp-controller="Category" asp-action="Index">Categories</a>
                             <div class="dropdown-menu" aria-labelledby="drop">
@@ -222,18 +222,18 @@
             document.cookie = "theme" + "=" + cookieValue + ";";
         }
 
-        $('.dropdown').on("mouseenter", () => {
-            $(".dropdown > a").addClass('show')
-            $(".dropdown > a").attr("aria-expanded", "true");
-            $(".dropdown > div").attr("data-bs-popper", "none");
-            $(".dropdown > div").addClass('show')
+        $('#dropdownUp').on("mouseenter", () => {
+            $("#dropdownUp > a").addClass('show')
+            $("#dropdownUp > a").attr("aria-expanded", "true");
+            $("#dropdownUp > div").attr("data-bs-popper", "none");
+            $("#dropdownUp > div").addClass('show')
         })
 
-        $('.dropdown').on("mouseleave", () => {
-            $(".dropdown > a").removeClass('show')
-            $(".dropdown > a").attr("aria-expanded", "false");
-            $(".dropdown > div").removeAttr("data-bs-popper", "none");
-            $(".dropdown > div").removeClass('show')
+        $('#dropdownUp').on("mouseleave", () => {
+            $("#dropdownUp > a").removeClass('show')
+            $("#dropdownUp > a").attr("aria-expanded", "false");
+            $("#dropdownUp > div").removeAttr("data-bs-popper", "none");
+            $("#dropdownUp > div").removeClass('show')
         })
     </script>
 
