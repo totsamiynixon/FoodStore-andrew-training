@@ -78,8 +78,10 @@ namespace Shop.Web.Controllers
             {
                 var food = _mapper.NewFoodModelToFood(model, true, _categoryService);
                 _foodService.NewFood(food);
+
                 return RedirectToAction("Index", new { id = food.Id });
             }
+
             GetCategoriesForDropDownList();
 
             ViewBag.ActionText = "create";
@@ -122,6 +124,7 @@ namespace Shop.Web.Controllers
             {
                 var food = _mapper.NewFoodModelToFood(model, false, _categoryService);
                 _foodService.EditFood(food);
+
                 return RedirectToAction("Index", new { id = model.Id });
             }
 
@@ -146,16 +149,14 @@ namespace Shop.Web.Controllers
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
         }
 
-
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var currentFood = _foodService.GetById(id);
-            var categoryId = currentFood.CategoryId; // получаем категорию где находился наш товар
+            var categoryId = currentFood.CategoryId;
             _foodService.DeleteFood(id);
 
             return RedirectToAction("Topic", "Category", new { id = categoryId, searchQuery = "" });
-
         }
     }
 }

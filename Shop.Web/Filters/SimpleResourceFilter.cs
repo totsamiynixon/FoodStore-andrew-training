@@ -8,16 +8,17 @@ namespace Shop.Web.Filters
     internal class SimpleResourceFilter : Attribute, IResourceFilter
     {
         private readonly IConfiguration _configuration;
-        private readonly bool isShowcase;
+        private readonly bool _isShowcase;
 
         public SimpleResourceFilter(IConfiguration configuration)
         {
             _configuration = configuration;
-            isShowcase = _configuration.GetValue<bool>("Showcase");
+            _isShowcase = _configuration.GetValue<bool>("Showcase");
         }
+
         public void OnResourceExecuting(ResourceExecutingContext context)
         {
-            if (isShowcase == true)
+            if (_isShowcase == true)
                 context.Result = new ContentResult { Content = "Ресурс не найден" };
         }
 

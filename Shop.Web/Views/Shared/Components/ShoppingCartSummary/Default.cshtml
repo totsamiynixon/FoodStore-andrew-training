@@ -14,8 +14,7 @@
     var isShowcase = Configuration.GetValue<bool>("Showcase");
 }
 
-@*@if ((User.IsInRole("Admin") & isShowcase == true) || (SignInManager.IsSignedIn(User) & isShowcase == false))*@
-@if (Showcase.Value)
+@if (Showcase.ShowcaseModeEnabled)
 {
     <a asp-area="" asp-controller="ShoppingCart" asp-action="Index" style="padding:5px;color: rgba(0,0,0,.7);text-decoration: none;">
         <i class="fas fa-shopping-cart fa-3x"></i>

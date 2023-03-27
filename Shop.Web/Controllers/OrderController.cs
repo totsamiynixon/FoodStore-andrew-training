@@ -21,7 +21,6 @@ namespace Shop.Web.Controllers
         private readonly Mapper _mapper;
         private static UserManager<ApplicationUser> _userManager;
 
-
         public OrderController(IOrder orderService, IFood foodService, ShoppingCartService shoppingCart, UserManager<ApplicationUser> userManager)
         {
             _orderService = orderService;
@@ -35,14 +34,16 @@ namespace Shop.Web.Controllers
         {
             var items = _shoppingCart.GetShoppingCartItems();
             _shoppingCart.ShoppingCartItems = items;
+
             if (items.Count() == 0)
             {
                 ModelState.AddModelError("", "Your cart is empty, add some items first");
+
                 return RedirectToAction("Index", "Home");
             }
+
             return View();
         }
-
 
         // [Authorize]
         // [HttpPost]
@@ -131,6 +132,7 @@ namespace Shop.Web.Controllers
             if (items.Count() == 0)
             {
                 ModelState.AddModelError("", "Your cart is empty, add some items first");
+
                 return RedirectToAction("Index", "Home");
             }
 
@@ -144,6 +146,7 @@ namespace Shop.Web.Controllers
 
                 _orderService.CreateOrder(order);
                 _shoppingCart.ClearCart();
+
                 return RedirectToAction("CheckoutComplete");
             }
 
@@ -153,6 +156,7 @@ namespace Shop.Web.Controllers
         public IActionResult CheckoutComplete()
         {
             ViewBag.CheckoutCompleteMessage = "Thanks for your order";
+
             return View();
         }
     }

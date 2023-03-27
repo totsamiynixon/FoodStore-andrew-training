@@ -1,22 +1,18 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Shop.Data.Models;
-using System.Security.Claims;
 using System;
-
 
 namespace Shop.Web.Services
 {
-   
     public class ShowcaseService
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly bool IsShowcase;
+        private readonly bool _IsShowcase;
 
         public ShowcaseService(IConfiguration configuration,
             UserManager<ApplicationUser> userManager,
@@ -25,22 +21,20 @@ namespace Shop.Web.Services
             IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
-            IsShowcase = _configuration.GetValue<bool>("Showcase");
             _userManager = userManager;
             _signInManager = signInManager;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public bool Value
+        public bool ShowcaseModeEnabled
         {
             get
             {
+                var _IsShowcase = _configuration.GetValue<bool>("Showcase");
                 var user = _httpContextAccessor.HttpContext.User;
-                if ( (user.IsInRole("Admin") & IsShowcase == true) || (_signInManager.IsSignedIn(user) & IsShowcase == false) 
-                    || (!_signInManager.IsSignedIn(user) & IsShowcase == false)
-                    // (!user.Identity.IsAuthenticated & IsShowcase == false) || (user.Identity == null & IsShowcase == false)
-                    )
-                    
+
+                if ( (user.IsInRole("Admin") & _IsShowcase == true) || (_signInManager.IsSignedIn(user) & _IsShowcase == false) 
+                    || (!_signInManager.IsSignedIn(user) & _IsShowcase == false))
                 {
                   return true;
                 }

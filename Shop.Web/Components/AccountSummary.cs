@@ -31,6 +31,7 @@ namespace Shop.Web.Components
 
 				return View(model);
 			}
+
 			return View();
 		}
 

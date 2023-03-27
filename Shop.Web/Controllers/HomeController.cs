@@ -11,6 +11,7 @@ namespace Shop.Web.Controllers
     {
         private readonly IFood _foodService;
         private readonly Mapper _mapper;
+
         public HomeController(IFood foodService)
         {
             _foodService = foodService;

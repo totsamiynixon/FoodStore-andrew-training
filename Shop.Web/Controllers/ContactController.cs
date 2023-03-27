@@ -12,6 +12,7 @@ namespace Shop.Web.Controllers
     {
         private readonly IContactUs _contactUs;
         private readonly Mapper _mapper;
+
         public ContactController(IContactUs contactUs)
         {
             _contactUs = contactUs;

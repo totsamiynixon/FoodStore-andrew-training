@@ -13,13 +13,14 @@ namespace Shop.Service
     public class ContactUsService : IContactUs
     {
         private readonly ApplicationDbContext _context;
+
         public ContactUsService(ApplicationDbContext context)
         {
             _context = context;
         }
+
         public void NewContactUs(ContactUs contact)
         {
-           
             _context.Add(contact);
             _context.SaveChanges();
         }
@@ -30,6 +31,7 @@ namespace Shop.Service
             
             return comments.OrderByDescending(comment => comment.CreatedDate); 
         }
+
         public ContactUs GetById(int id)
         {
             return GetAll().FirstOrDefault(comment => comment.Id == id);

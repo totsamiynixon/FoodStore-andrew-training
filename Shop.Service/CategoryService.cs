@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop.Data;
 using Shop.Data.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -23,9 +22,6 @@ namespace Shop.Service
 
             if (!category.IsVisible)
             {
-                //var shoppingCartItemToDelete = _context.ShoppingCartItems.Where(
-                //    item => category.Foods.Any(food => food.Id == item.FoodId));
-
                 var list = _context.Foods.Where(food => food.CategoryId == category.Id);
                 var DelList = _context.ShoppingCartItems.Where(item => list.Any(food => food.Id == item.FoodId));
 
@@ -72,7 +68,6 @@ namespace Shop.Service
             var currentCategory = GetById(id);
             _context.Remove(currentCategory);
             _context.SaveChanges();
-
         }
     }
 }

@@ -11,6 +11,6 @@ namespace Shop.Data
     {
         void NewContactUs(ContactUs contact);
         IEnumerable<ContactUs> GetAll();
-        public ContactUs GetById(int id);
+        ContactUs GetById(int id);
     }
 }

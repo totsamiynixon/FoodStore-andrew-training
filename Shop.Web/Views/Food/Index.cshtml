@@ -33,7 +33,7 @@
                 {
                     <div class="categoryPrice">In Stock: @Model.InStock</div>
                 }
-                @if (Showcase.Value)
+                @if (Showcase.ShowcaseModeEnabled)
                 {
                     <form asp-controller="ShoppingCart" asp-action="Add" method="get" class="form-horizontal" role="form">
                         <a onclick="changeValue(document.getElementById('amount-input-'+@Model.Id.ToString()),document.getElementById('foodTotal-@(Model.GetHashCode())'), @Model.Total, 1)"><i class="fas fa-plus-circle"></i></a>
