@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Shop.Data;
-using Shop.Data.Models;
 using Shop.Web.DataMapper;
 using Shop.Web.Models;
 using System.Diagnostics;
@@ -9,16 +7,13 @@ using System.Linq;
 
 namespace Shop.Web.Controllers
 {
-   
     public class HomeController : Controller
     {
         private readonly IFood _foodService;
-        private readonly IContactUs _contactUs;
         private readonly Mapper _mapper;
-        public HomeController(IFood foodService, IConfiguration configuration, IContactUs contactUs)
+        public HomeController(IFood foodService)
         {
             _foodService = foodService;
-            _contactUs = contactUs;
             _mapper = new Mapper();
         }
         
@@ -54,19 +49,6 @@ namespace Shop.Web.Controllers
             var model = _mapper.FoodsToHomeIndexModel(searchedFoods);
 
             return View(model);
-        }
-
-        public IActionResult Contact()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Contact(ContactUs contactModel)
-        {
-            var one = contactModel;
-            _contactUs.NewContactUs(contactModel);
-            return RedirectToAction("Index");
         }
     }
 }

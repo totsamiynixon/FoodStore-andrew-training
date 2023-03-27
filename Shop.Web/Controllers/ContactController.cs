@@ -18,23 +18,36 @@ namespace Shop.Web.Controllers
             _mapper = new Mapper();
         }
 
-        [Authorize(Roles = "Admin")]
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult ContactList()
         {
             var comments = _contactUs.GetAll();
             var model = _mapper.ContactUsToConatctModel(comments);
 
             return View(model);
+        }       
+
+        [HttpPost]
+        public IActionResult ContactForm(ContactUs contactModel)
+        {
+            _contactUs.NewContactUs(contactModel);
+
+            return RedirectToAction("Index", "Home");
         }
 
         [Authorize(Roles = "Admin")]
-        [Route("Contact/{id}")]
+        [Route("Contact/DetailComment/{id}")]
         public IActionResult DetailComment(int id)
         {
             var comment = _contactUs.GetById(id);
             var model = _mapper.ContactUsToContactModel(comment);
 
-            return View(model); 
+            return View(model);
         }
     }
 }
