@@ -15,6 +15,6 @@ namespace Shop.Data.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Comment { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now.ToLocalTime();
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     }
 }

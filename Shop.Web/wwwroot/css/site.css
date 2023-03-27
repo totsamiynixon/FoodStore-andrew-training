@@ -1360,3 +1360,6 @@ body{
     z-index: 1030;
 }
 
+#myFooter .dropdown-menu button:hover {
+    color: red
+}
