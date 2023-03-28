@@ -36,6 +36,5 @@ namespace Shop.Service
         {
             return GetAll().FirstOrDefault(comment => comment.Id == id);
         }
-
     }
 }
