@@ -24,6 +24,7 @@ namespace Shop.Web.Components
                 ShoppingCart = _shoppingCart,
                 ShoppingCartTotal = _shoppingCart.GetShoppingCartTotal()
             };
+
             return View(model);
         }
     }

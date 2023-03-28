@@ -6,9 +6,9 @@ using Shop.Web.Models.Food;
 using Shop.Web.DataMapper;
 using System.Linq;
 using Shop.Web.Models;
-using System.Collections.Generic;
 using System;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Shop.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Shop.Web.Controllers
 {
@@ -17,18 +17,28 @@ namespace Shop.Web.Controllers
 		private readonly ICategory _categoryService;
 		private readonly IFood _foodService;
         private readonly Mapper _mapper;
+		private static UserManager<ApplicationUser> _userManager;
 
-		public CategoryController(ICategory categoryService, IFood foodService)
+		public CategoryController(ICategory categoryService, IFood foodService, 
+			UserManager<ApplicationUser> userManager)
 		{
 			_categoryService = categoryService;
 			_foodService = foodService;
             _mapper = new Mapper();
+			_userManager = userManager;
 		}
 
 		public IActionResult Index()
 		{
 			var categories = _categoryService.GetAll();
 			var model = _mapper.CategoriesToCategoryIndexModel(categories);
+
+            if (User.IsInRole("Admin"))
+            {
+                return View(model);
+            }
+
+			model.CategoryList = model.CategoryList.Where(category => category.IsVisible == true);
 
 			return View(model);
 		}
@@ -37,7 +47,6 @@ namespace Shop.Web.Controllers
 		{
 			var category = _categoryService.GetById(id);
 			var foods = _foodService.GetFilteredFoods(id, searchQuery);
-
 			var foodListings = foods.Select(food => new FoodListingModel
 			{
 				Id = food.Id,
@@ -85,10 +94,6 @@ namespace Shop.Web.Controllers
 		{
 			var category = _categoryService.GetById(id);
 			var foods = _foodService.GetFoodsByCategoryId(id);
-
-            // var form = Request.Form;
-            // Попробовать реализовать через Component               to do 
-
             var minPrice = priceValue.MinPrice;
 			var maxPrice = priceValue.MaxPrice;
             
@@ -118,7 +123,6 @@ namespace Shop.Web.Controllers
                 model.Foods = model.Foods.Where(x => x.Price >= maxPrice);
             }
 			
-
 			return View(model);
 		}
 
@@ -145,6 +149,7 @@ namespace Shop.Web.Controllers
 			{
 				var category = _mapper.CategoryListingToModel(model);
 				_categoryService.NewCategory(category);
+
 				return RedirectToAction("Topic", new { id = category.Id, searchQuery = "" });
 			}
 
@@ -169,6 +174,7 @@ namespace Shop.Web.Controllers
 			if (category != null)
 			{
 				var model = _mapper.CategoryToCategoryListing(category);
+
 				return View("CreateEdit" ,model);
 			}
 
@@ -203,6 +209,7 @@ namespace Shop.Web.Controllers
 
             return RedirectToAction("Index");
         }
+
 		[HttpPost]
 		public IActionResult Search(string searchQuery)
 		{

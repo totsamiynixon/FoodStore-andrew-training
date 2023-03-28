@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop.Data;
 using Shop.Data.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -20,6 +19,15 @@ namespace Shop.Service
 		public void EditCategory(Category category)
         {
             _context.Update(category);
+
+            if (!category.IsVisible)
+            {
+                var list = _context.Foods.Where(food => food.CategoryId == category.Id);
+                var DelList = _context.ShoppingCartItems.Where(item => list.Any(food => food.Id == item.FoodId));
+
+                _context.ShoppingCartItems.RemoveRange(DelList);
+            }
+            
             _context.SaveChanges();
         }
 
@@ -60,7 +68,6 @@ namespace Shop.Service
             var currentCategory = GetById(id);
             _context.Remove(currentCategory);
             _context.SaveChanges();
-
         }
     }
 }

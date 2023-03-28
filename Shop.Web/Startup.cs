@@ -12,6 +12,7 @@ using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Shop.Web.Helpers;
+using Shop.Web.Services;
 
 namespace Shop.Web
 {
@@ -28,7 +29,7 @@ namespace Shop.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(
                options =>
@@ -52,6 +53,8 @@ namespace Shop.Web
             services.AddTransient<ICategory, CategoryService>();
             services.AddTransient<IFood, FoodService>();
             services.AddTransient<IOrder, OrderService>();
+            services.AddTransient<IContactUs, ContactUsService>();
+            services.AddTransient<ShowcaseService>();
             // services.AddTransient<IShoppingCart, ShoppingCartService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IShoppingCart>(sp => ShoppingCardHelper.GetCart(sp));

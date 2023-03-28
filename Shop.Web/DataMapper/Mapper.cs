@@ -3,6 +3,7 @@ using Shop.Data;
 using Shop.Data.Models;
 using Shop.Web.Models.Account;
 using Shop.Web.Models.Category;
+using Shop.Web.Models.ContactUs;
 using Shop.Web.Models.Food;
 using Shop.Web.Models.Home;
 using Shop.Web.Models.Order;
@@ -12,13 +13,42 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Shop.Web.DataMapper
 {
     public class Mapper
     {
+        #region Contact
+
 
         #region Category
+        public IEnumerable<ContactModel> ContactUsToConatctModel(IEnumerable<ContactUs> model)
+        {
+            return model.Select(comment => new ContactModel
+            {
+                Id = comment.Id,
+                FirstName = comment.FirstName,
+                LastName = comment.LastName,
+                Email = comment.Email,
+                Comment = comment.Comment,
+                CreatedDate = comment.CreatedDate
+            });
+        }
+
+        public ContactModel ContactUsToContactModel(ContactUs comment)
+        {
+            return new ContactModel
+            {
+                Id = comment.Id,
+                FirstName = comment.FirstName,
+                LastName = comment.LastName,
+                Email = comment.Email,
+                Comment = comment.Comment,
+                CreatedDate = comment.CreatedDate,
+            };
+        }
+        #endregion
 
         public Category CategoryListingToModel(CategoryListingModel model)
         {
@@ -28,6 +58,7 @@ namespace Shop.Web.DataMapper
                 Name = model.Name,
                 Description = model.Description,
                 ImageUrl = model.ImageUrl,
+                IsVisible = model.IsVisible,
             };
         }
 
@@ -44,18 +75,20 @@ namespace Shop.Web.DataMapper
                 Name = category.Name,
                 Description = category.Description,
                 Id = category.Id,
-                ImageUrl = category.ImageUrl
+                ImageUrl = category.ImageUrl,
+                IsVisible = category.IsVisible
             };
         }
 
         public CategoryIndexModel CategoriesToCategoryIndexModel(IEnumerable<Category> categories)
         {
-            var categoryListingModel = categories.Select( category => new CategoryListingModel
+            var categoryListingModel = categories.Select(category => new CategoryListingModel
             {
                 Name = category.Name,
                 Description = category.Description,
                 Id = category.Id,
-                ImageUrl = category.ImageUrl
+                ImageUrl = category.ImageUrl,
+                IsVisible = category.IsVisible,
             });
 
             return new CategoryIndexModel
@@ -84,7 +117,7 @@ namespace Shop.Web.DataMapper
                 ShortDescription = food.ShortDescription,
                 IsVisible = food.IsVisible
             };
-    }
+        }
 
 
         public Food NewFoodModelToFood(NewFoodModel model, bool newInstance, ICategory categoryService)
@@ -259,7 +292,7 @@ namespace Shop.Web.DataMapper
             };
         }
 
-        public AccountProfileModel ApplicationUserToAccountProfileModel(ApplicationUser user, IOrder orderService,string role)
+        public AccountProfileModel ApplicationUserToAccountProfileModel(ApplicationUser user, IOrder orderService, string role)
         {
             return new AccountProfileModel
             {

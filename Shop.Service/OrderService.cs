@@ -38,6 +38,7 @@ namespace Shop.Service
                         Price = item.Food.Price,
                         Food = item.Food
                     });
+
                 _context.Update(item.Food);
                 item.Food.InStock = Math.Max(item.Food.InStock - item.Amount, 0);
             }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shop.Data;
 using Shop.Data.Models;
 using Shop.Web.DataMapper;
+using Shop.Web.Filters;
 using Shop.Web.Models.Order;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 namespace Shop.Web.Controllers
 {
     [Authorize]
+    [TypeFilter(typeof(SimpleResourceFilter))]
     public class OrderController : Controller
     {
         private readonly IOrder _orderService;
@@ -18,7 +20,6 @@ namespace Shop.Web.Controllers
         private readonly IShoppingCart _shoppingCart;
         private readonly Mapper _mapper;
         private static UserManager<ApplicationUser> _userManager;
-
 
         public OrderController(IOrder orderService, IFood foodService, ShoppingCartService shoppingCart, UserManager<ApplicationUser> userManager)
         {
@@ -33,14 +34,16 @@ namespace Shop.Web.Controllers
         {
             var items = _shoppingCart.GetShoppingCartItems();
             _shoppingCart.ShoppingCartItems = items;
+
             if (items.Count() == 0)
             {
                 ModelState.AddModelError("", "Your cart is empty, add some items first");
+
                 return RedirectToAction("Index", "Home");
             }
+
             return View();
         }
-
 
         // [Authorize]
         // [HttpPost]
@@ -129,6 +132,7 @@ namespace Shop.Web.Controllers
             if (items.Count() == 0)
             {
                 ModelState.AddModelError("", "Your cart is empty, add some items first");
+
                 return RedirectToAction("Index", "Home");
             }
 
@@ -142,6 +146,7 @@ namespace Shop.Web.Controllers
 
                 _orderService.CreateOrder(order);
                 _shoppingCart.ClearCart();
+
                 return RedirectToAction("CheckoutComplete");
             }
 
@@ -151,6 +156,7 @@ namespace Shop.Web.Controllers
         public IActionResult CheckoutComplete()
         {
             ViewBag.CheckoutCompleteMessage = "Thanks for your order";
+
             return View();
         }
     }

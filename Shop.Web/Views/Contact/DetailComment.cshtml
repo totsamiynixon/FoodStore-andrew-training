@@ -1,0 +1,29 @@
+﻿@model Shop.Web.Models.ContactUs.ContactModel
+
+<div class="container body-content" style="margin-bottom:200px; margin-top: 50px">
+    <div class="row foodHeader" style="position: relative">
+        <div class="foodHeading">
+            <span class="foodIndexName">
+                @Model.FirstName @Model.LastName
+            </span>
+            <br>
+            <span class="foodIndexName">
+                @Model.Email
+            </span>
+            <br>
+            <span id="headingBtn" style="position: absolute; top: 10px; right: 10px"><a asp-controller="Contact" asp-action="Index" class="btn btn-back">Back to section</a></span>
+        </div>
+    </div>
+
+    <div class="row" id="foodIndexContent">
+        <div class="col-md-9 foodContentContainer">
+            <div class="categoryLogo" style="background-size:100%; width:360px;height:240px"></div>
+            <div class="foodContent">
+                <span class="foodIndexName" style="font-weight: bold">
+                    @Model.CreatedDate
+                </span>
+                <p>@Model.Comment</p>
+            </div>
+        </div>
+    </div>
+</div>

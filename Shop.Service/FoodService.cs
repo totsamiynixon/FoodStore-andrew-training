@@ -32,6 +32,7 @@ namespace Shop.Service
 
             _context.SaveChanges();
         }
+
 		public IEnumerable<Food> GetAll()
         {
             return _context.Foods
@@ -45,7 +46,6 @@ namespace Shop.Service
 
         public IEnumerable<Food> GetFilteredFoods(int id, string searchQuery)
         {
-            
             if(string.IsNullOrEmpty(searchQuery) || string.IsNullOrWhiteSpace(searchQuery))
             {
                 return GetFoodsByCategoryId(id);
@@ -57,6 +57,7 @@ namespace Shop.Service
         public IEnumerable<Food> GetFilteredFoods(string searchQuery)
         {
             var queries = string.IsNullOrEmpty(searchQuery) ? null : Regex.Replace(searchQuery, @"\s+", " ").Trim().Split(" ");
+            
             if(queries == null)
             {
                 return GetPreferred(10);

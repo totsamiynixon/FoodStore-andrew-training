@@ -1,4 +1,24 @@
-﻿@foreach (var category in ViewBag.Categories.CategoryListName)
+﻿@using Microsoft.AspNetCore.Identity;
+@using Shop.Data.Models;
+@inject UserManager<ApplicationUser> UserManager
+
+@if (User.IsInRole("Admin"))
 {
-    <a class="dropdown-item" asp-controller="Category" asp-action="Topic" asp-route-id="@category.Id">@category.Name</a>
+    @foreach (var category in ViewBag.Categories.CategoryListName)
+    {
+        <a class="dropdown-item" asp-controller="Category" asp-action="Topic" asp-route-id="@category.Id">@category.Name</a>
+    }
 }
+else
+{
+    @foreach (var category in ViewBag.Categories.CategoryListName)
+    {
+        if (category.IsVisible)
+        {
+            <a class="dropdown-item" asp-controller="Category" asp-action="Topic" asp-route-id="@category.Id">@category.Name</a>
+        }
+    }
+
+}
+
+

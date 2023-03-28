@@ -13,6 +13,7 @@ namespace Shop.Data.Models
     {
         private readonly ApplicationDbContext _context;
         private readonly string _userId;
+
         public ShoppingCartService(ApplicationDbContext context, string userId)
         {
             _context = context;
@@ -23,7 +24,6 @@ namespace Shop.Data.Models
 
         public bool AddToCart(Food food, int amount)
         {
-
             if (food.InStock == 0 || amount == 0)
             {
                 return false;
@@ -32,6 +32,7 @@ namespace Shop.Data.Models
             var shoppingCartItem = _context.ShoppingCartItems.SingleOrDefault(
                 s => s.Food.Id == food.Id && s.ShoppingCartId == _userId);
             var isValidAmount = true;
+
             if (shoppingCartItem == null)
             {
                 if (amount > food.InStock)
@@ -68,6 +69,7 @@ namespace Shop.Data.Models
             var shoppingCartItem = _context.ShoppingCartItems.SingleOrDefault(
                 s => s.Food.Id == food.Id && s.ShoppingCartId == _userId);
             int localAmount = 0;
+
             if (shoppingCartItem != null)
             {
                 if (shoppingCartItem.Amount > 1)
@@ -82,6 +84,7 @@ namespace Shop.Data.Models
             }
 
             _context.SaveChanges();
+
             return localAmount;
         }
 
@@ -108,7 +111,6 @@ namespace Shop.Data.Models
                 .ShoppingCartItems
                 .Where(item => item.Food.IsVisible == false);
 
-            //var shoppingCartItem = GetShoppingCartItems();
             _context.ShoppingCartItems.Except(shoppingCartItemForDelete);
             _context.SaveChanges();
         }
@@ -118,6 +120,5 @@ namespace Shop.Data.Models
             return _context.ShoppingCartItems.Where(c => c.ShoppingCartId == _userId)
                 .Select(c => c.Food.Price * c.Amount).ToList().Sum();
         }
-
     }
 }

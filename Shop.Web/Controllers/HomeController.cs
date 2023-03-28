@@ -1,12 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Data;
-using Shop.Data.Models;
-using Shop.Service;
 using Shop.Web.DataMapper;
 using Shop.Web.Models;
-using Shop.Web.Models.Category;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -22,7 +17,7 @@ namespace Shop.Web.Controllers
             _foodService = foodService;
             _mapper = new Mapper();
         }
-
+        
         [Route("/")]
         public IActionResult Index()
         {
@@ -54,7 +49,6 @@ namespace Shop.Web.Controllers
             var searchedFoods = _foodService.GetFilteredFoods(searchQuery);
             var model = _mapper.FoodsToHomeIndexModel(searchedFoods);
 
-            
             return View(model);
         }
     }
