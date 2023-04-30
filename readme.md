@@ -1,7 +1,7 @@
 # BUYNOW - online food shop
 
 
-![image](![image](https://user-images.githubusercontent.com/78071146/235365716-f624d534-47ef-4254-9c5b-4c5b85113910.png))
+![image](![image]([https://user-images.githubusercontent.com/78071146/235365716-f624d534-47ef-4254-9c5b-4c5b85113910.png](https://prnt.sc/4FMJSPXLsoPm)))
 
 ## Bugs
 
