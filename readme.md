@@ -2,8 +2,9 @@
 
 
 Screenshot:
-![Screenshot_2](https://user-images.githubusercontent.com/78071146/235366534-aefedd64-0b32-48d3-9290-9d26b011b69c.jpg)
-
+![Screenshot_3](https://user-images.githubusercontent.com/78071146/235366587-6d872d67-7877-44ed-93bb-9726f6beb81b.jpg)
+![Screenshot_4](https://user-images.githubusercontent.com/78071146/235366632-8c2a1a9a-0bae-4a43-9944-68793b28baef.jpg)
+![Screenshot_5](https://user-images.githubusercontent.com/78071146/235366680-59ed8a8a-3f45-4d6d-8ecc-c8408ac9e795.jpg)
 
 ## Bugs
 
