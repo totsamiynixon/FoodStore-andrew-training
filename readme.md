@@ -2,7 +2,7 @@
 
 
 Screenshot:
-![image](https://prnt.sc/N-NllNb1kB9U)
+![image](https://user-images.githubusercontent.com/78071146/188587543-1e6130c6-b533-41e4-9826-82d922de4169.png)
 
 ## Bugs
 
