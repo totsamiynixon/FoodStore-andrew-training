@@ -5,6 +5,10 @@ using Shop.Web.Models.Category;
 using Shop.Web.Models.Food;
 using Shop.Web.DataMapper;
 using System.Linq;
+using Shop.Web.Models;
+using System;
+using Shop.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Shop.Web.Controllers
 {
@@ -13,39 +17,87 @@ namespace Shop.Web.Controllers
 		private readonly ICategory _categoryService;
 		private readonly IFood _foodService;
         private readonly Mapper _mapper;
+		private static UserManager<ApplicationUser> _userManager;
 
-		public CategoryController(ICategory categoryService, IFood foodService)
+		public CategoryController(ICategory categoryService, IFood foodService, 
+			UserManager<ApplicationUser> userManager)
 		{
 			_categoryService = categoryService;
 			_foodService = foodService;
             _mapper = new Mapper();
+			_userManager = userManager;
 		}
 
 		public IActionResult Index()
 		{
-			var categories = _categoryService.GetAll().
-				Select(category => new CategoryListingModel
-				{
-					Name = category.Name,
-					Description = category.Description,
-					Id = category.Id,
-					ImageUrl = category.ImageUrl
-				});
+			var categories = _categoryService.GetAll();
+			var model = _mapper.CategoriesToCategoryIndexModel(categories);
 
-			var model = new CategoryIndexModel
-			{
-				CategoryList = categories
-			};
+            if (User.IsInRole("Admin"))
+            {
+                return View(model);
+            }
+
+			model.CategoryList = model.CategoryList.Where(category => category.IsVisible == true);
 
 			return View(model);
 		}
 
-		public IActionResult Topic(int id, string searchQuery)
+		public IActionResult Topic(int id, string searchQuery, SortState sortOrder)
 		{
 			var category = _categoryService.GetById(id);
 			var foods = _foodService.GetFilteredFoods(id, searchQuery);
-
 			var foodListings = foods.Select(food => new FoodListingModel
+			{
+				Id = food.Id,
+				Name = food.Name,
+				InStock = food.InStock,
+				Price = food.Price,
+				ShortDescription = food.ShortDescription,
+				Category = _mapper.FoodToCategoryListing(food),
+				ImageUrl = food.ImageUrl,
+                IsVisible = food.IsVisible
+			});
+
+			if(!User.IsInRole("Admin")) 
+			{
+                foodListings = foodListings.Where(x => x.IsVisible == true);
+            }
+
+			var model = new CategoryTopicModel
+			{
+				Category = _mapper.CategoryToCategoryListing(category),
+				Foods = foodListings
+			};
+
+			if (sortOrder == SortState.PriceAsc)
+			{
+                model.Foods = model.Foods.OrderBy(food => food.Price);
+                return View(model);
+            }
+
+            if (sortOrder == SortState.PriceDesc)
+            {
+                model.Foods = model.Foods.OrderByDescending(food => food.Price);
+                return View(model);
+            }
+			if(sortOrder == SortState.None)
+			{
+				return View(model);
+			}
+
+            return View(model);
+		}
+
+		[HttpPost]
+		public IActionResult Topic(int id, FilterState priceValue)
+		{
+			var category = _categoryService.GetById(id);
+			var foods = _foodService.GetFoodsByCategoryId(id);
+            var minPrice = priceValue.MinPrice;
+			var maxPrice = priceValue.MaxPrice;
+            
+            var foodListings = foods.Select(food => new FoodListingModel
 			{
 				Id = food.Id,
 				Name = food.Name,
@@ -62,6 +114,15 @@ namespace Shop.Web.Controllers
 				Foods = foodListings
 			};
 
+			if(Convert.ToBoolean(minPrice))
+			{
+                model.Foods = model.Foods.Where(x => x.Price <= minPrice);
+            }
+			if (Convert.ToBoolean(maxPrice))
+			{
+                model.Foods = model.Foods.Where(x => x.Price >= maxPrice);
+            }
+			
 			return View(model);
 		}
 
@@ -88,6 +149,7 @@ namespace Shop.Web.Controllers
 			{
 				var category = _mapper.CategoryListingToModel(model);
 				_categoryService.NewCategory(category);
+
 				return RedirectToAction("Topic", new { id = category.Id, searchQuery = "" });
 			}
 
@@ -112,6 +174,7 @@ namespace Shop.Web.Controllers
 			if (category != null)
 			{
 				var model = _mapper.CategoryToCategoryListing(category);
+
 				return View("CreateEdit" ,model);
 			}
 
@@ -137,5 +200,28 @@ namespace Shop.Web.Controllers
 
 			return View("CreateEdit",model);
 		}
-	}
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id)
+        {
+            _categoryService.DeleteCategory(id);
+
+            return RedirectToAction("Index");
+        }
+
+		[HttpPost]
+		public IActionResult Search(string searchQuery)
+		{
+			if(string.IsNullOrWhiteSpace(searchQuery) || string.IsNullOrEmpty(searchQuery))
+			{
+				return RedirectToAction("Index");
+			}
+
+			var searchCategory = _categoryService.GetFilteredCategory(searchQuery);
+			var model = _mapper.CategoriesToCategoryIndexModel(searchCategory);
+
+			return View(model);
+		}
+    }
 }

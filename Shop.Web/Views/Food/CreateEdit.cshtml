@@ -4,7 +4,7 @@
     <h3 class="text-center" style="margin-bottom:32px;">Fill out the fields to @ViewBag.ActionText food</h3>
     <div class="col-md-offset-2 col-md-10">
         <div class="row orderForm ">
-            
+
             <form asp-action="@ViewBag.Action" method="post" class="form-horizontal col-md-8" role="form">
                 <div class="form-group">
                     <label asp-for="Name" class="col-md-3 control-label"></label>
@@ -55,6 +55,10 @@
                         @Html.RadioButtonFor(model => model.IsPreferedFood, "false") No
                         <span asp-validation-for="IsPreferedFood" class="text-danger"></span>
                     </div>
+                    <br>
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(model => model.IsVisible, "true") Visibility
+                    </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="CategoryId" class="col-md-3 control-label"></label>
@@ -66,7 +70,7 @@
 
                 <div class="form-group">
                     <div class="btn-group col-md-4">
-                        @if(ViewBag.RouteId == null || ViewBag.RouteId == 0)
+                        @if (ViewBag.RouteId == null || ViewBag.RouteId == 0)
                         {
                             <a class="btn btn-default" asp-action="@ViewBag.CancelAction" asp-controller="@ViewBag.ControllerName">Cancel</a>
                         }
@@ -82,8 +86,8 @@
 
             </form>
             <div class="col-md-4">
-                <div >
-                    <img id="FoodImage"  src= "@Url.Content(Model.ImageUrl)" alt="Invalid Url" width="300" heigth="300"/>
+                <div>
+                    <img id="FoodImage" src="@Url.Content(Model.ImageUrl)" alt="Invalid Url" width="300" heigth="300" />
                 </div>
             </div>
         </div>

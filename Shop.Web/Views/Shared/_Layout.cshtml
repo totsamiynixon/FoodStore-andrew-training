@@ -1,11 +1,25 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.Extensions.Configuration
 @using Shop.Data.Models
+@using Shop.Web.Models.Category
+@using Shop.Web.Services
 
+@inject IConfiguration Configuration
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@inject ShowcaseService Showcase
 
 @{
+    if (Context.Request.Cookies.ContainsKey("theme"))
+    {
+        string? nameTheme = Context.Request.Cookies["theme"];
+    }
+    else
+    {
+        Context.Response.Cookies.Append("theme", "Light");
+    }
     ViewBag.BodyClass = "bg1";
+    ViewBag.NavClass = "theme-dark";
 }
 
 <!DOCTYPE html>
@@ -14,7 +28,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BuyNow - Online food store</title>
-    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" /> 
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
     <environment include="Development">
         <!-- <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" /> -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -31,112 +45,134 @@
     <link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 </head>
 <body class="@ViewBag.BodyClass d-flex flex-column h-100">
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: #f8f8f8;">
-        <a asp-controller="Home" asp-action="Index" class="navbar-brand">
-            <img src="/images/logo.png" width="140px">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
+            <nav class="navbar navbar-expand-lg navbar-light fixed-top
+         @if (Context.Request.Cookies["theme"] == "Dark")
+        {
+            @ViewBag.NavClass
+        }" id="tagNav">
+                <a asp-controller="Home" asp-action="Index" class="navbar-brand">
+                    <img src="/images/logo.png" width="140px">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-        <div class="collapse navbar-collapse" id="navbarColor03">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" asp-controller="Category" asp-action="Index">Categories</a>
-            </li>
-            @if(User.IsInRole("Admin"))
-            {
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Account" asp-action="Index">Users</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Food" asp-action="New">New Food</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Category" asp-action="New">New Category</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Account" asp-action="Register">New User</a>
-                </li>
-            }
-        </ul>
-        <form class="form-inline">
-            @if(SignInManager.IsSignedIn(User))
-            {
-                @await Component.InvokeAsync("ShoppingCartSummary")
-                @await Component.InvokeAsync("AccountSummary")
-            }
-            else
-            {
-                @await Html.PartialAsync("_LoginPartial")
-            }
-        </form>
-        </div>
-    </nav>
-    <div class="container body-content flex-shrink-0">
-        @RenderBody()
-    </div>
-<!-- Footer -->
-    <footer id="myFooter" class="page-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3">
-                    <a style="width: 100%;height: 150px;margin-top: 0px;"  asp-controller="Home" asp-action="Index" class="navbar-brand navLogo footerLogo"></a>
-                </div>
-                <div class="col-sm-2">
-                    <h5>Get started</h5>
-                    <ul>
-                        <li><a asp-action="Index" asp-controller="Home">Home</a></li>
-                        @if(SignInManager.IsSignedIn(User))
+                <div class="collapse navbar-collapse" id="navbarColor03">
+                    <ul class="navbar-nav mr-auto">
+                        <li id="dropdownUp" class="nav-item dropdown active">
+                            <a class="nav-link dropdown-toggle" id="drop" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                               asp-controller="Category" asp-action="Index">Categories</a>
+                            <div class="dropdown-menu" aria-labelledby="drop">
+                                @await Component.InvokeAsync("CategoriesName")
+                            </div>
+                        </li>
+                        @if (User.IsInRole("Admin"))
                         {
-                                <li><a class="btn-link" asp-controller="Account" asp-action="Logout">Log out</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Index">Users</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Food" asp-action="New">New Food</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Category" asp-action="New">New Category</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Register">New User</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Contact" asp-action="ContactList">Contact Us</a>
+                            </li>
+                        }
+                    </ul>
+                    <form class="form-inline">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            @await Component.InvokeAsync("ShoppingCartSummary")
+                            @await Component.InvokeAsync("AccountSummary")
                         }
                         else
                         {
-                            <li><a asp-action="Login" asp-controller="Account">Sign in</a></li>
-                            <li><a asp-action="Register" asp-controller="Account">Sign up</a></li>
+                            @await Html.PartialAsync("_LoginPartial")
                         }
-                    </ul>
+                    </form>
                 </div>
-                <div class="col-sm-2">
-                    <h5>About us</h5>
-                    <ul>
-                        <li><a href="#">Company Information</a></li>
-                        <li><a href="#">Contact us</a></li>
-                        <li><a href="#">Reviews</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-2">
-                    <h5>Support</h5>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Help desk</a></li>
-                        <li><a href="#">Forums</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <div class="social-networks">
-                        <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="google"><i class="fab fa-google-plus"></i></a>
-                    </div>
-                    <button type="button" class="btn btn-default">Contact us</button>
-                </div>
+            </nav>
+            <div class="container body-content flex-shrink-0">
+                @RenderBody()
             </div>
         </div>
-        <div class="footer-copyright">
-            <p>© 2019 BuyNow - Online Food Shop </p>
-        </div>
-    </footer>
-<!-- Footer -->
+        <!-- Footer -->
+        <footer id="myFooter" class="page-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <a style="width: 100%;height: 150px;margin-top: 0px;" asp-controller="Home" asp-action="Index" class="navbar-brand navLogo footerLogo"></a>
+                    </div>
+                    <div class="col-sm-2">
+                        <h5>Get started</h5>
+                        <ul>
+                            <li><a asp-action="Index" asp-controller="Home">Home</a></li>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <li><a class="btn-link" asp-controller="Account" asp-action="Logout">Log out</a></li>
+                            }
+                            else
+                            {
+                                <li><a asp-action="Login" asp-controller="Account">Sign in</a></li>
+                                <li><a asp-action="Register" asp-controller="Account">Sign up</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-sm-2">
+                        <h5>About us</h5>
+                        <ul>
+                            <li><a href="#">Company Information</a></li>
+                            <li><a href="#">Contact us</a></li>
+                            <li><a href="#">Reviews</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-2">
+                        <h5>Support</h5>
+                        <ul>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Help desk</a></li>
+                            <li><a href="#">Forums</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="social-networks">
+                            <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="google"><i class="fab fa-google-plus"></i></a>
+                        </div>
+                        <a type="button" class="btn btn-default" href="Contact/Index">Contact us</a>
+
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Theme
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <button class="dropdown-item" href="#" onclick="removeDarkTheme()" id="buttonLight">Light</button>
+                                <button class="dropdown-item" href="#" onclick="setDarkTheme()" id="buttonDark">Dark</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <p>© 2019 BuyNow - Online Food Shop </p>
+            </div>
+        </footer>
+        <!-- Footer -->
 
     <environment include="Development">
-        <!-- <script src="~/lib/jquery/dist/jquery.js"></script>
+        @*       <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script> -->
+        <script src="~/js/site.js" asp-append-version="true"></script>*@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -153,25 +189,53 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-     <script type="text/javascript">
-         function changeValue(target, output,total,  num) {
-             let val = parseInt(target.value);
-             if (num < 0 && val <= 1) {
-                 return;
-             }
-             val += num;
-             target.value = val;
-
-             let totalInt = val * parseFloat(total.substring(1));
-             output.value = ('$' + totalInt).substring(0,6);
+    <script type="text/javascript">
+        function changeValue(target, output, total, num) {
+            let val = parseInt(target.value);
+            if (num < 0 && val <= 1) {
+                return;
             }
+            val += num;
+            target.value = val;
 
-        function readUrl(input, id) {  
+            let totalInt = val * parseFloat(total.substring(1));
+            output.value = ('$' + totalInt).substring(0, 6);
+        }
+
+        function readUrl(input, id) {
             if (input && input.value) {
-                $('#'+id).attr('src', input.value);
+                $('#' + id).attr('src', input.value);
             }
-        }    
-     </script>
+        }
+        ///////////////////////////////////////////////////-------
+        function setDarkTheme(winDoc) {
+            saveThemeCookie("Dark");
+            window.location.reload()
+        }
+
+        function removeDarkTheme(winDoc) {
+            saveThemeCookie("Light");
+            window.location.reload();
+        }
+
+        function saveThemeCookie(cookieValue) {
+            document.cookie = "theme" + "=" + cookieValue + ";";
+        }
+
+        $('#dropdownUp').on("mouseenter", () => {
+            $("#dropdownUp > a").addClass('show')
+            $("#dropdownUp > a").attr("aria-expanded", "true");
+            $("#dropdownUp > div").attr("data-bs-popper", "none");
+            $("#dropdownUp > div").addClass('show')
+        })
+
+        $('#dropdownUp').on("mouseleave", () => {
+            $("#dropdownUp > a").removeClass('show')
+            $("#dropdownUp > a").attr("aria-expanded", "false");
+            $("#dropdownUp > div").removeAttr("data-bs-popper", "none");
+            $("#dropdownUp > div").removeClass('show')
+        })
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>

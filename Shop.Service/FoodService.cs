@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Shop.Data;
 using Shop.Data.Models;
 using System;
@@ -22,8 +23,16 @@ namespace Shop.Service
             var model = _context.Foods.First(f => f.Id == food.Id);
             _context.Entry<Food>(model).State = EntityState.Detached;
             _context.Update(food);
+
+            if (!food.IsVisible)
+            {
+                var shoppingCartItemToDelete = _context.ShoppingCartItems.Where(item => item.FoodId == food.Id);
+                _context.ShoppingCartItems.RemoveRange(shoppingCartItemToDelete);
+            }
+
             _context.SaveChanges();
         }
+
 		public IEnumerable<Food> GetAll()
         {
             return _context.Foods
@@ -37,7 +46,6 @@ namespace Shop.Service
 
         public IEnumerable<Food> GetFilteredFoods(int id, string searchQuery)
         {
-            
             if(string.IsNullOrEmpty(searchQuery) || string.IsNullOrWhiteSpace(searchQuery))
             {
                 return GetFoodsByCategoryId(id);
@@ -49,12 +57,13 @@ namespace Shop.Service
         public IEnumerable<Food> GetFilteredFoods(string searchQuery)
         {
             var queries = string.IsNullOrEmpty(searchQuery) ? null : Regex.Replace(searchQuery, @"\s+", " ").Trim().Split(" ");
+            
             if(queries == null)
             {
                 return GetPreferred(10);
             }
-
-            return GetAll().Where(item => queries.Any(query => (item.Name.Contains(query))));
+            
+            return GetAll().Where(item => queries.Any(query => (item.Name.ToLower().Contains(query.ToLower()))));
         }
 
         public IEnumerable<Food> GetFoodsByCategoryId(int categoryId)
@@ -71,6 +80,13 @@ namespace Shop.Service
         {
             _context.Add(food);
             _context.SaveChanges();
+        }
+
+        public void DeleteFood(int id)
+        {
+            var currentFood = GetById(id);
+                _context.Remove(currentFood);
+                _context.SaveChanges();
         }
     }
 }

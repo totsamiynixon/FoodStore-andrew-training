@@ -8,16 +8,20 @@ namespace Shop.Web.Models.Account
         [RegularExpression(@"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$", ErrorMessage = "Email is incorrect")]
         [DataType(DataType.EmailAddress)]
         [Display(Name ="Email")]
+
+        [Required]
         public string Email { get; set; }
 
-        [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$", 
-            ErrorMessage = @"Password is incorrect")]
+        [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$", ErrorMessage = @"Password is incorrect")]
         [DataType(DataType.Password)]
         [Display(Name ="Password")]
+        
+        [Required]
+
         public string Password { get; set; }
-
+        
         public string IncorrectInput { get; set; }
-
+        
         public string ReturnUrl { get; set; }
     }
 }

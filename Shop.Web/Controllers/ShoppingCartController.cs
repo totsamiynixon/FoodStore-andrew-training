@@ -1,31 +1,32 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Data;
-using Shop.Data.Models;
+using Shop.Web.Filters;
 using Shop.Web.Models.ShoppingCart;
 
 namespace Shop.Web.Controllers
 {
     [Authorize]
+    [TypeFilter(typeof(SimpleResourceFilter))]
     public class ShoppingCartController : Controller
     {
         private readonly IFood _foodService;
-        private readonly ShoppingCart _shoppingCart;
+        private readonly IShoppingCart _shoppingCartService;
 
-        public ShoppingCartController(IFood foodService, ShoppingCart shoppingCart)
+        public ShoppingCartController(IFood foodService, IShoppingCart shoppingCartService)
         {
             _foodService = foodService;
-            _shoppingCart = shoppingCart;
+            _shoppingCartService = shoppingCartService;
         }
 
         public IActionResult Index(bool isValidAmount = true, string returnUrl = "/")
         {
-            _shoppingCart.GetShoppingCartItems();
+            _shoppingCartService.GetShoppingCartItems();
 
             var model = new ShoppingCartIndexModel
             {
-                ShoppingCart = _shoppingCart,
-                ShoppingCartTotal = _shoppingCart.GetShoppingCartTotal(),
+                ShoppingCart = _shoppingCartService,                                             
+                ShoppingCartTotal = _shoppingCartService.GetShoppingCartTotal(),
                 ReturnUrl = returnUrl
             };
 
@@ -44,9 +45,10 @@ namespace Shop.Web.Controllers
             var food = _foodService.GetById(id);
             returnUrl = returnUrl.Replace("%2F", "/");
             bool isValidAmount = false;
+
             if (food != null)
             {
-                isValidAmount = _shoppingCart.AddToCart(food, amount.Value);
+                isValidAmount = _shoppingCartService.AddToCart(food, amount.Value);
             }
 
             return Index(isValidAmount, returnUrl);
@@ -55,10 +57,12 @@ namespace Shop.Web.Controllers
         public IActionResult Remove(int foodId)
         {
             var food = _foodService.GetById(foodId);
+
             if (food != null)
             {
-                _shoppingCart.RemoveFromCart(food);
+                _shoppingCartService.RemoveFromCart(food);
             }
+
             return RedirectToAction("Index");
         }
 

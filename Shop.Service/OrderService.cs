@@ -11,9 +11,9 @@ namespace Shop.Service
     public class OrderService : IOrder
     {
         private readonly ApplicationDbContext _context;
-        private readonly ShoppingCart _shoppingCart;
+        private readonly IShoppingCart _shoppingCart;
 
-        public OrderService(ApplicationDbContext context, ShoppingCart shoppingCart)
+        public OrderService(ApplicationDbContext context, IShoppingCart shoppingCart)
         {
             _context = context;
             _shoppingCart = shoppingCart;
@@ -38,6 +38,7 @@ namespace Shop.Service
                         Price = item.Food.Price,
                         Food = item.Food
                     });
+
                 _context.Update(item.Food);
                 item.Food.InStock = Math.Max(item.Food.InStock - item.Amount, 0);
             }

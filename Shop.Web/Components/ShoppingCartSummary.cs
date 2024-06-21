@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Shop.Data;
 using Shop.Data.Models;
 using Shop.Web.Models.ShoppingCart;
 
@@ -6,9 +7,9 @@ namespace Shop.Web.Components
 {
     public class ShoppingCartSummary : ViewComponent
     {
-        private readonly ShoppingCart _shoppingCart;
+        private readonly IShoppingCart _shoppingCart;
 
-        public ShoppingCartSummary(ShoppingCart shoppingCart)
+        public ShoppingCartSummary(IShoppingCart shoppingCart)
         {
             _shoppingCart = shoppingCart;
         }
@@ -23,6 +24,7 @@ namespace Shop.Web.Components
                 ShoppingCart = _shoppingCart,
                 ShoppingCartTotal = _shoppingCart.GetShoppingCartTotal()
             };
+
             return View(model);
         }
     }

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Shop.Web.Models.ContactUs.ContactModel>
+
+<table class="table table-hover table-dark table-stripped table-bordered" style="margin-top: 50px">
+    <thead>
+        <tr>
+            <th class="text-right">Date</th>
+            <th class="text-right">First name</th>
+            <th class="text-right">Last name</th>
+            <th class="text-right">Email</th>
+            <th class="text-right">Text</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var comment in Model)
+        {
+            <tr>
+                <td class="text-center"><a class="btn btn-info" asp-controller="Contact" asp-action="DetailComment" asp-route-id="@comment.Id">@comment.CreatedDate</a></td>
+                <td class="text-left">@comment.FirstName</td>
+                <td class="text-left">@comment.LastName</td>
+                <td class="text-left">@comment.Email</td>
+                <td class="text-left">@comment.Comment</td>
+            </tr>
+        }
+    </tbody>
+</table>

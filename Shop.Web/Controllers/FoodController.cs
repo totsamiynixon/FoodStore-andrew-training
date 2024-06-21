@@ -13,13 +13,15 @@ namespace Shop.Web.Controllers
     {
         private readonly ICategory _categoryService;
         private readonly IFood _foodService;
+        private readonly IShoppingCart _shoppingCartService;
         private readonly Mapper _mapper;
 
-        public FoodController(ICategory categoryService, IFood foodService)
+        public FoodController(ICategory categoryService, IFood foodService, IShoppingCart shoppingCartService)
         {
             _categoryService = categoryService;
             _foodService = foodService;
             _mapper = new Mapper();
+            _shoppingCartService = shoppingCartService;
         }
 
         [Route("Foods/{id}")]
@@ -36,7 +38,8 @@ namespace Shop.Web.Controllers
                 Price = food.Price,
                 Description = food.ShortDescription + "\n" + food.LongDescription,
                 CategoryId = food.Category.Id,
-                CategoryName = food.Category.Name
+                CategoryName = food.Category.Name,
+                IsVisible = food.IsVisible,
             };
 
             return View(model);
@@ -48,7 +51,7 @@ namespace Shop.Web.Controllers
             GetCategoriesForDropDownList();
             NewFoodModel model = new NewFoodModel
             {
-                CategoryId = categoryId
+                CategoryId = categoryId,
             };
 
             ViewBag.ActionText = "create";
@@ -75,8 +78,10 @@ namespace Shop.Web.Controllers
             {
                 var food = _mapper.NewFoodModelToFood(model, true, _categoryService);
                 _foodService.NewFood(food);
+
                 return RedirectToAction("Index", new { id = food.Id });
             }
+
             GetCategoriesForDropDownList();
 
             ViewBag.ActionText = "create";
@@ -119,6 +124,7 @@ namespace Shop.Web.Controllers
             {
                 var food = _mapper.NewFoodModelToFood(model, false, _categoryService);
                 _foodService.EditFood(food);
+
                 return RedirectToAction("Index", new { id = model.Id });
             }
 
@@ -141,6 +147,16 @@ namespace Shop.Web.Controllers
                 Name = category.Name
             });
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id)
+        {
+            var currentFood = _foodService.GetById(id);
+            var categoryId = currentFood.CategoryId;
+            _foodService.DeleteFood(id);
+
+            return RedirectToAction("Topic", "Category", new { id = categoryId, searchQuery = "" });
         }
     }
 }

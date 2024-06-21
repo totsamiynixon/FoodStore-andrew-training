@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Shop.Data.Models;
+using System.Globalization;
 
 namespace Shop.Web.Models.Food
 {
@@ -14,5 +15,6 @@ namespace Shop.Web.Models.Food
         public int Amount { get; set; } = 1;
         public string Total { get => (Price * Amount).ToString("c", CultureInfo.CreateSpecificCulture("en-US")) ; }
         public string CategoryName { get; set; }
+        public bool IsVisible { get; set; }
     }
 }
